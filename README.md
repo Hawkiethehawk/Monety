@@ -56,6 +56,34 @@ Monety/
 python -m pip install openpyxl
 ```
 
+## 一键部署（Windows）
+
+远程安装（自动克隆仓库、配置 `MONETY_PROJECT_DIR`、注册 PowerShell `monety` 命令）：
+
+```powershell
+irm https://gitee.com/Hawkiethehawk/Monety/raw/master/scripts/deploy.ps1 | iex
+```
+
+本地安装（在已克隆的仓库内）：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\deploy.ps1
+```
+
+部署后新开的 PowerShell 会自动定位到项目目录，并可使用 `monety` 命令：
+
+| 命令 | 作用 |
+| --- | --- |
+| `monety build` | 重新构建网页端（从 `monety/` 生成 `viewer/index.html`） |
+| `monety start` | 启动本地网页服务（默认 `http://127.0.0.1:8888`，可用 `MONETY_PORT` 覆盖） |
+| `monety stop` | 停止本地网页服务 |
+| `monety restart` | 重启本地网页服务 |
+| `monety status` | 显示项目、Git 与网页服务状态 |
+| `monety push [message]` | 构建 + 提交 + 推送 gitee |
+| `monety update` | 从 gitee 拉取最新版本并重新构建、重启 |
+
+环境变量 `MONETY_PROJECT_DIR` 由部署脚本自动设置；网页服务端口默认 `8888`，可通过 `MONETY_PORT` 覆盖。
+
 ## 调用方式
 
 在对话中明确调用主 Skill：
@@ -159,13 +187,13 @@ python topn-open-api/scripts/search_topon_docs.py "Publisher Key 鉴权" --limit
 预览页内容在构建时从 `monety/` 下的 md / json 文件生成，修改后需要重新构建再刷新浏览器：
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File F:\Monety\scripts\build-skill-viewer.ps1
+monety build
 ```
 
-启动本地预览服务时不弹命令行窗口，用 `python` 加 `-WindowStyle Hidden`：
+启动本地预览服务（后台隐藏窗口，不弹命令行）：
 
 ```powershell
-Start-Process python -ArgumentList '-m','http.server','8888','--bind','127.0.0.1','--directory','F:\Monety\viewer' -WindowStyle Hidden
+monety start
 ```
 
 无头打开页面验证时，用隐藏窗口执行 `npx`，避免临时弹出 cmd 窗口：
