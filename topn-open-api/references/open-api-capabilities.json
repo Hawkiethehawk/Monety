@@ -1,0 +1,211 @@
+{
+  "schema_version": "1.0.0",
+  "captured_at": "2026-07-21T08:07:23Z",
+  "help_center_root": "https://help.toponad.net/cn/docs/bbrcIF",
+  "defaults": {
+    "currency": "USD",
+    "timezone": "UTC+0",
+    "page_limit": 1000,
+    "read_only": true
+  },
+  "source_precedence": [
+    {
+      "rank": 1,
+      "source": "open_api_reporting",
+      "purpose": "主要事实数据：收入、用户、请求填充展示漏斗、竞价、留存和小时趋势"
+    },
+    {
+      "rank": 2,
+      "source": "open_api_configuration_reads",
+      "purpose": "主要维度与配置快照：应用、广告位、平台账号、广告源、流量分组、Waterfall、A/B 测试"
+    },
+    {
+      "rank": 3,
+      "source": "manual_exports",
+      "purpose": "补充 Open API 未返回的界面维度、抽样对账和问题取证"
+    },
+    {
+      "rank": 4,
+      "source": "user_context",
+      "purpose": "解释发布、投放、运营动作等业务事件；作为待验证上下文"
+    }
+  ],
+  "authentication": {
+    "headers": ["X-Up-Key", "X-Up-Timestamp", "X-Up-Signature"],
+    "signature": "uppercase MD5 of HTTPMethod, Content-MD5, Content-Type, sorted public headers, and resource path joined by newlines",
+    "timestamp_valid_minutes": 15,
+    "query_string_in_signature_resource": false,
+    "documentation": "https://help.toponad.net/cn/docs/9NzgWP"
+  },
+  "rate_limits": {
+    "reporting": {
+      "max_concurrency_per_developer": 3,
+      "max_per_endpoint_per_minute": 20,
+      "max_all_reporting_per_minute": 40,
+      "max_all_reporting_per_30_minutes": 300,
+      "recommended_mode": "serial",
+      "avoid_schedule": "单数小时整点及 40-55 分"
+    },
+    "management": {
+      "max_concurrency_per_developer_per_endpoint": 1,
+      "max_per_endpoint_per_minute": 20,
+      "max_per_endpoint_per_30_minutes": 200,
+      "recommended_mode": "serial"
+    },
+    "documentation": "https://help.toponad.net/cn/docs/xian-liu-shuo-ming"
+  },
+  "reporting_datasets": {
+    "comprehensive": {
+      "role": "primary",
+      "method": "POST",
+      "path": "/v2/fullreport",
+      "url": "https://api.toponad.net/v2/fullreport",
+      "date_parameters": ["startdate", "enddate"],
+      "filters": ["app_id_list", "placement_id_list", "network_firm_id_list", "adsource_id_list", "area_list"],
+      "dimensions": ["date", "app", "placement", "adformat", "area", "network", "adsource", "network_firm_id", "scenario", "traffic_group", "channel", "sdk_version", "app_version", "abtest"],
+      "max_group_by_dimensions": 6,
+      "metrics": {
+        "users": ["dau", "deu", "engaged_rate", "imp_dau", "imp_deu", "dau_launch", "new_users", "new_user_rate", "launch", "per_dau_launch"],
+        "estimated_revenue": ["cy_estimate_revenue", "cy_estimate_revenue_ecpm", "estimate_revenue", "estimate_revenue_ecpm", "estimated_revenue_arpdeu", "estimated_revenue_arpu", "per_launch_estimated_revenue"],
+        "third_party_api_revenue": ["revenue", "ecpm", "ecpc", "ecpr", "cy_arpu", "arpu", "ecpm_api", "unit_ecpc", "unit_ecpr", "full_app_revenue"],
+        "bidding": ["bid_request", "bid_filled_request_rate", "bid_filled_request_ecpm", "waterfall_win", "waterfall_win_rate"],
+        "funnel": ["load", "loads_filled", "load_fillrate", "request", "request_filled", "fillrate", "impression", "impression_rate", "click", "ctr"],
+        "ready": ["ready_request", "ready_rate", "scenario_entry", "scenario_entry_ready_rate"],
+        "third_party_api_counts": ["request_api", "fillrate_api", "impression_api", "click_api", "ctr_api"],
+        "gaps": ["revenue_gap", "ecpm_gap", "impression_gap", "click_gap"],
+        "latency": ["load_cost_time", "request_cost_time"],
+        "other": ["day2_retention", "per_launch_impression", "per_launch_click"]
+      },
+      "pagination": {"offset": "start", "limit": "limit", "max_limit": 1000, "total": "count"},
+      "freshness": {
+        "topon_same_day": "约每 10 分钟更新",
+        "third_party_t_minus_1": "约每 2 小时更新，通常比后台晚 2-3 小时",
+        "permission_warmup": "开通报表 API 后约 2-3 小时才开始返回数据",
+        "history_boundary": "通常只能取得开通日前推 10 天及之后的数据"
+      },
+      "important_constraints": [
+        "group_by 包含 scenario、traffic_group、channel、sdk_version 或 app_version 时，不返回第三方 API 指标及相关收益/GAP 指标",
+        "DAU、新用户、流量请求、广告场景等指标受 group_by 和筛选条件限制，缺失不等于数值为零",
+        "estimate_revenue 已标注后续下线，优先使用 cy_estimate_revenue 并显式请求 USD",
+        "历史数据通常不更新，日常增量建议重拉最近 2 天"
+      ],
+      "documentation": "https://help.toponad.net/cn/docs/dukFyc"
+    },
+    "hourly": {
+      "role": "primary_intraday",
+      "method": "POST",
+      "path": "/v3/report/tk_hour",
+      "url": "https://api.toponad.net/v3/report/tk_hour",
+      "date_parameters": ["start_date", "end_date"],
+      "filters": ["app_id_list", "placement_id_list", "scenario_list", "adformat_list", "segment_id_list", "network_id_list", "adsource_id_list", "geo_short_list", "sdk_version_list", "app_version_list", "platform_list", "device_type_list", "channel_list"],
+      "dimensions": ["date", "hour"],
+      "metrics": ["loads", "load_fill_rate", "request", "request_fill_rate", "impression", "impression_rate", "click", "click_rate", "estimated_revenue", "estimated_revenue_ecpm", "launch"],
+      "required_context": ["currency", "time_zone"],
+      "max_date_span_days": 10,
+      "pagination": {"offset": "start", "limit": "limit", "max_limit": 1000, "total": "count"},
+      "freshness": "正常约每 5 分钟更新",
+      "documentation": "https://help.toponad.net/cn/docs/1frPcq"
+    },
+    "ltv_1_60": {
+      "role": "primary_cohort",
+      "method": "POST",
+      "path": "/v3/ltvreport",
+      "url": "https://api.toponad.net/v3/ltvreport",
+      "filters": ["appid_list", "area_list", "channel_list"],
+      "dimensions": ["date", "app", "area", "channel", "device"],
+      "metrics": ["new_user", "ltv_day_1...ltv_day_60"],
+      "metric_semantics": "ltv_day_N 是该新增用户 cohort 第 N 天总收益；除以 new_user 才对应后台的人均 LTV",
+      "device_constraint": "device 维度仅支持 iOS；iOS 与 Android 同传时只返回 iOS",
+      "pagination": {"offset": "start", "limit": "limit", "max_limit": 1000, "total": "count"},
+      "freshness": "只能查询 T-1 及更早数据，建议 UTC+8 晚 10 点重拉昨天",
+      "documentation": "https://help.toponad.net/cn/docs/LTV-160-tian-shu-ju"
+    },
+    "retention_2_60": {
+      "role": "primary_cohort",
+      "method": "POST",
+      "path": "/v3/retentionreport",
+      "url": "https://api.toponad.net/v3/retentionreport",
+      "filters": ["appid_list", "area_list", "channel_list"],
+      "dimensions": ["date", "app", "area", "channel", "device"],
+      "metrics": ["new_user", "retention_day_2...retention_day_60"],
+      "metric_semantics": "retention_day_N 是留存人数，不是留存率；留存率需除以 new_user",
+      "device_constraint": "device 维度仅支持 iOS；iOS 与 Android 同传时只返回 iOS",
+      "pagination": {"offset": "start", "limit": "limit", "max_limit": 1000, "total": "count"},
+      "freshness": "只能查询 T-1 及更早数据，建议 UTC+8 晚 10 点重拉昨天",
+      "documentation": "https://help.toponad.net/cn/docs/liu-cun-260-tian-shu-ju"
+    },
+    "new_user_impressions_1_60": {
+      "role": "primary_cohort",
+      "method": "POST",
+      "path": "/v3/impnewuserreport",
+      "url": "https://api.toponad.net/v3/impnewuserreport",
+      "filters": ["app_id_list", "placement_id_list", "geo_short_list", "channel_list"],
+      "dimensions": ["date_time", "app_id", "placement_id", "geo_short", "channel"],
+      "metrics": ["new_user", "impression_1...impression_60"],
+      "metric_semantics": "impression_N 是第 N 天新用户人均展示；乘以 new_user 得到该日 cohort 展示增量",
+      "app_constraint": "app_id_list 必传且一次只能传一个应用",
+      "pagination": {"offset": "start", "limit": "limit", "max_limit": 1000, "total": "count"},
+      "freshness": "延迟 1 天，建议 UTC+8 晚 10 点重拉昨天",
+      "documentation": "https://help.toponad.net/cn/docs/zhan-shi-he-xin-zeng-yong-hu-160-tian-shu-ju"
+    },
+    "device_impression_click": {
+      "role": "restricted_granular",
+      "method": "GET",
+      "path": "/v3/devicereport",
+      "url": "https://api.toponad.net/v3/devicereport",
+      "parameters": ["day", "app_id", "timezone"],
+      "delivery": "返回短期有效的 CSV 下载链接",
+      "dimensions": ["placement_id", "placement_name", "placement_format", "android_id", "gaid", "idfa", "idfv", "oaid", "imei", "amazon_id", "set_gaid", "set_imei", "set_oaid", "set_idfa", "user_id", "area", "is_abtest", "traffic_group_id", "segment_id", "segment_name", "network_firm_id", "network_firm", "os_version", "att_status", "device_type", "brand", "model", "app_vn", "app_vc", "new_user_type", "channel", "sub_channel", "scenario_custom_uuid", "scenario_name"],
+      "metrics": ["impression", "click", "revenue", "ecpm", "estimate_revenue", "cny_estimate_revenue"],
+      "retention_days": 30,
+      "permission": "需要联系 TopOn 单独开通",
+      "privacy": "包含设备标识、IP/用户标识等敏感数据，必须最小化、脱敏并限制保留",
+      "documentation": "https://help.toponad.net/cn/docs/OJPZH2"
+    }
+  },
+  "event_sources": {
+    "impression_revenue_s2s": {
+      "role": "optional_primary_event_stream",
+      "direction": "TopOn calls developer endpoint",
+      "method": "GET",
+      "dimensions": ["user_id", "req_id", "geo_short", "package_name", "adformat", "placement_id", "nw_firm_id", "adsource_id", "timestamp", "show_custom_ext"],
+      "metrics": ["adsource_price", "currency"],
+      "deduplication_key": ["req_id", "adsource_id"],
+      "delivery_guarantee": "TopOn 回调失败不重试；接收端需快速返回 HTTP 200 并异步处理",
+      "permission": "需要联系 AM 开通并提供接收地址",
+      "privacy": "可能包含 client_ip 和设备标识，默认采集器不得保存这些字段",
+      "documentation": "https://help.toponad.net/cn/docs/guang-gao-zhan-shi-fu-wu-duan-hui-diao-S2S"
+    }
+  },
+  "configuration_reads": {
+    "apps": {"method": "POST", "path": "/v1/apps", "data": ["app_id", "app_name", "platform", "package_name", "category", "sub_category", "store_url", "orientation", "COPPA/CCPA"], "documentation": "https://help.toponad.net/cn/docs/ying-yong-guan-li-xin-ban-v3"},
+    "placements": {"method": "POST", "path": "/v1/placements", "data": ["广告位身份、名称、应用、广告样式、状态及已登记配置"], "documentation": "https://help.toponad.net/cn/docs/aqW7tE"},
+    "network_accounts": {"method": "GET", "path": "/v1/networks", "data": ["广告平台 Publisher/App 维度账号参数与报表 API 开通信息"], "documentation": "https://help.toponad.net/cn/docs/MKYR3n"},
+    "custom_networks": {"method": "GET", "path": "/v1/custom_networks", "data": ["自定义广告平台 Publisher 维度信息"], "documentation": "https://help.toponad.net/cn/docs/MKYR3n"},
+    "ad_sources": {"method": "GET", "path": "/v3/units/list", "data": ["广告源列表，可按应用、广告位、广告平台筛选"], "pagination": {"offset": "start", "limit": "limit", "max_limit": 200}, "documentation": "https://help.toponad.net/cn/docs/yj3d9s"},
+    "ad_source_details": {"method": "GET", "path": "/v3/units", "data": ["指定广告源详情与第三方广告位参数"], "documentation": "https://help.toponad.net/cn/docs/yj3d9s"},
+    "mediation_groups": {"method": "GET", "path": "/v3/mediation_group/:placement_id", "data": ["广告位下的聚合分组、时区等"], "documentation": "https://help.toponad.net/cn/docs/0u4ZH3"},
+    "traffic_segments": {"method": "GET", "path": "/v3/mediation_segment/:mediation_group_id", "data": ["流量分组、优先级、匹配规则及状态"], "documentation": "https://help.toponad.net/cn/docs/0u4ZH3"},
+    "segment_strategies": {"method": "GET", "path": "/v3/mediation_segment/strategies", "data": ["流量分组高级策略与竞价底价等币种相关属性"], "documentation": "https://help.toponad.net/cn/docs/0u4ZH3"},
+    "waterfall_units": {"method": "GET", "path": "/v3/waterfall/:mediation_group_id/segment_id/:segment_id/units", "data": ["启用/关闭广告源、eCPM、自动 eCPM、竞价底价、频控、同价优先级、并发请求数"], "documentation": "https://help.toponad.net/cn/docs/kHxCQb"},
+    "waterfall_unit_properties": {"method": "GET", "path": "/v3/waterfall/units", "data": ["广告源在所有 Waterfall 的属性"], "documentation": "https://help.toponad.net/cn/docs/kHxCQb"},
+    "abtest_waterfall_units": {"method": "GET", "path": "/v3/waterfall/:mediation_group_id/segment_id/:segment_id/abtest_group_item_id/:abtest_group_item_id/units", "data": ["A/B 测试分组下启用和关闭的广告源及价格/底价"], "documentation": "https://help.toponad.net/cn/docs/kHxCQb"},
+    "abtests": {"method": "GET", "path": "/v3/abtest", "data": ["实验 ID、应用、状态、生效时间、实验组权重、广告位和停用选择"], "documentation": "https://help.toponad.net/cn/docs/DRjqiT"},
+    "abtest_detail": {"method": "GET", "path": "/v3/abtest/:id", "data": ["单个 A/B 测试完整配置"], "documentation": "https://help.toponad.net/cn/docs/DRjqiT"},
+    "reward_rules": {"method": "GET", "path": "/v3/advanced/reward_rule", "data": ["激励规则、回调地址、状态和密钥"], "sensitive": true, "documentation": "https://help.toponad.net/cn/docs/fu-wu-duan-hui-diao-gui-ze"},
+    "exchange_rates": {"method": "GET", "path": "/v1/exchange_rate/list", "data": ["指定日期美元兑人民币汇率"], "documentation": "https://help.toponad.net/cn/docs/mei-yuan-zhuan-ren-min-bi-hui-lyu"}
+  },
+  "write_surfaces": {
+    "default_policy": "disabled",
+    "families": ["应用创建/修改", "广告位创建/修改/启停", "广告平台账号参数", "广告源创建/修改/删除", "流量分组创建/排序/修改/删除", "Waterfall 和底价修改", "A/B 测试创建/更新/停用/开启", "激励回调规则", "第三方收益报表上传", "第三方平台广告位创建"],
+    "execution_requirement": "必须由用户明确指定目标、旧值、新值和回滚方案，并在执行前再次确认"
+  },
+  "known_documentation_ambiguities": [
+    "Publisher Key 说明提到 ROI 和 ROI_LTV 报表，但当前 Open API 导航及本地镜像没有对应端点文档；取得官方接口说明前不能编造调用路径",
+    "综合报表正文 URL 显示 api.toponad.net，但链接目标和样例出现 openapi.toponad.com/api.toponad.com，首次联调需验证实际可用主机",
+    "分小时报表返回参数写 records，样例却使用 data，解析器必须兼容两者",
+    "展示与新增用户接口参数表写 time_zone/start，样例写 timezone_api/offset，首次联调需以真实响应和错误码确认",
+    "留存返回表把 retention_day_N 备注写成用户价值，但正文明确它是留存人数，按人数处理",
+    "部分新版管理文档仍调用 v1 列表接口，版本号不能只按页面标题推断"
+  ]
+}

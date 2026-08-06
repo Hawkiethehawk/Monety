@@ -1,0 +1,757 @@
+{
+  "site": "https://help.toponad.net/cn",
+  "captured_at": "2026-07-21T08:07:23Z",
+  "discovered_pages": 42,
+  "saved_pages": 42,
+  "failed_pages": 0,
+  "failures": [],
+  "roots": [
+    "bbrcIF"
+  ],
+  "pages": [
+    {
+      "slug": "bbrcIF",
+      "url": "https://help.toponad.net/cn/docs/bbrcIF",
+      "title": "Open API接入指南",
+      "category_path": [
+        "Open API接入指南"
+      ],
+      "parent_slug": null,
+      "order": 294,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2024-07-08",
+      "content_sha256": "9e4edb4e9b4638f2f30473f6b4e08bbd65e88ab6b0f5d3cab23a036b5f44baa7",
+      "has_article_body": false,
+      "status": 200,
+      "file": "docs/bbrcIF.md"
+    },
+    {
+      "slug": "dHqDSB",
+      "url": "https://help.toponad.net/cn/docs/dHqDSB",
+      "title": "概述",
+      "category_path": [
+        "Open API接入指南",
+        "概述"
+      ],
+      "parent_slug": "bbrcIF",
+      "order": 295,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2025-05-30",
+      "content_sha256": "3a443b11fb52d8ed1f2539bbedb7ef8fb9116f203054d8d2b85fcb83b859b867",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/dHqDSB.md"
+    },
+    {
+      "slug": "CDrD9t",
+      "url": "https://help.toponad.net/cn/docs/CDrD9t",
+      "title": "授权和风险提示说明",
+      "category_path": [
+        "Open API接入指南",
+        "授权和风险提示说明"
+      ],
+      "parent_slug": "bbrcIF",
+      "order": 296,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2025-05-30",
+      "content_sha256": "09c192879c0017229fb890dfe3aaa0a40ec072903ca553208de8459bf680edd9",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/CDrD9t.md"
+    },
+    {
+      "slug": "9NzgWP",
+      "url": "https://help.toponad.net/cn/docs/9NzgWP",
+      "title": "接口鉴权说明",
+      "category_path": [
+        "Open API接入指南",
+        "接口鉴权说明"
+      ],
+      "parent_slug": "bbrcIF",
+      "order": 297,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2025-05-30",
+      "content_sha256": "2334abc4eb9ef4b8e3a2d5256d5ab19ef6650a84c877fa0a69c7400a568e2caf",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/9NzgWP.md"
+    },
+    {
+      "slug": "XfibL9",
+      "url": "https://help.toponad.net/cn/docs/XfibL9",
+      "title": "Publisher Key说明",
+      "category_path": [
+        "Open API接入指南",
+        "Publisher Key说明"
+      ],
+      "parent_slug": "bbrcIF",
+      "order": 298,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2025-05-30",
+      "content_sha256": "07271f7ff49f8860137c1012b80e9f2ff1e59860b5262b5aeaaf4dd23f2c92d3",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/XfibL9.md"
+    },
+    {
+      "slug": "klEx9c",
+      "url": "https://help.toponad.net/cn/docs/klEx9c",
+      "title": "示例代码",
+      "category_path": [
+        "Open API接入指南",
+        "示例代码"
+      ],
+      "parent_slug": "bbrcIF",
+      "order": 299,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2025-05-30",
+      "content_sha256": "5e4fa302df5ca7eefb330307cee5bb4c88b36f61e2f0caaf5af2b155d4fec253",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/klEx9c.md"
+    },
+    {
+      "slug": "xian-liu-shuo-ming",
+      "url": "https://help.toponad.net/cn/docs/xian-liu-shuo-ming",
+      "title": "限流说明",
+      "category_path": [
+        "Open API接入指南",
+        "限流说明"
+      ],
+      "parent_slug": "bbrcIF",
+      "order": 300,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2025-05-30",
+      "content_sha256": "2d3a118b492a462b1d58dcc5f2743aed6f66de08056a197ec58300d05a0143e8",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/xian-liu-shuo-ming.md"
+    },
+    {
+      "slug": "l0ytRw",
+      "url": "https://help.toponad.net/cn/docs/l0ytRw",
+      "title": "错误码",
+      "category_path": [
+        "Open API接入指南",
+        "错误码"
+      ],
+      "parent_slug": "bbrcIF",
+      "order": 301,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2026-04-14",
+      "content_sha256": "26cc0f945e25710461030d948f8c043d4fd813d1d1f45ef225eb5c8a64289459",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/l0ytRw.md"
+    },
+    {
+      "slug": "OEAV0i",
+      "url": "https://help.toponad.net/cn/docs/OEAV0i",
+      "title": "开发者后台管理API",
+      "category_path": [
+        "Open API接入指南",
+        "开发者后台管理API"
+      ],
+      "parent_slug": "bbrcIF",
+      "order": 302,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2025-05-30",
+      "content_sha256": "57442d73ce70f3ab28e28dc6be4b2b475aa35609ef89dbe1490c30271c6fc298",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/OEAV0i.md"
+    },
+    {
+      "slug": "Ndt56S",
+      "url": "https://help.toponad.net/cn/docs/Ndt56S",
+      "title": "应用管理（过期）",
+      "category_path": [
+        "Open API接入指南",
+        "开发者后台管理API",
+        "应用管理（过期）"
+      ],
+      "parent_slug": "OEAV0i",
+      "order": 303,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2026-06-02",
+      "content_sha256": "aed99363f5beb576ae8cc7b4d4f762c0179f3b1eb23eff9c7567e3641e393e9a",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/Ndt56S.md"
+    },
+    {
+      "slug": "ying-yong-guan-li-xin-ban-v3",
+      "url": "https://help.toponad.net/cn/docs/ying-yong-guan-li-xin-ban-v3",
+      "title": "应用管理（新版v3）",
+      "category_path": [
+        "Open API接入指南",
+        "开发者后台管理API",
+        "应用管理（新版v3）"
+      ],
+      "parent_slug": "OEAV0i",
+      "order": 304,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2026-04-21",
+      "content_sha256": "6185b0a7845987578a2f1c66231328525dea9fa2983468aee40fe3763509f68b",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/ying-yong-guan-li-xin-ban-v3.md"
+    },
+    {
+      "slug": "aqW7tE",
+      "url": "https://help.toponad.net/cn/docs/aqW7tE",
+      "title": "广告位管理",
+      "category_path": [
+        "Open API接入指南",
+        "开发者后台管理API",
+        "广告位管理"
+      ],
+      "parent_slug": "OEAV0i",
+      "order": 305,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2026-06-02",
+      "content_sha256": "a05f384e9a6ced1155d9aeb226815873fc33ab12cfcaa066e2a48d541d32f458",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/aqW7tE.md"
+    },
+    {
+      "slug": "MKYR3n",
+      "url": "https://help.toponad.net/cn/docs/MKYR3n",
+      "title": "广告平台管理",
+      "category_path": [
+        "Open API接入指南",
+        "开发者后台管理API",
+        "广告平台管理"
+      ],
+      "parent_slug": "OEAV0i",
+      "order": 306,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2026-04-21",
+      "content_sha256": "ad8454f3b4e6796f102cba8ec3f9cb43f3eae1c823a44cf6bff4aa47072d959d",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/MKYR3n.md"
+    },
+    {
+      "slug": "0u4ZH3",
+      "url": "https://help.toponad.net/cn/docs/0u4ZH3",
+      "title": "聚合管理的AB测试及流量分组管理",
+      "category_path": [
+        "Open API接入指南",
+        "开发者后台管理API",
+        "聚合管理的AB测试及流量分组管理"
+      ],
+      "parent_slug": "OEAV0i",
+      "order": 307,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2026-04-21",
+      "content_sha256": "b3c0ca141387f1489a70d1486cc9f63a093edf3c10af2c150df556ecc5b29a47",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/0u4ZH3.md"
+    },
+    {
+      "slug": "kHxCQb",
+      "url": "https://help.toponad.net/cn/docs/kHxCQb",
+      "title": "聚合管理的广告源管理",
+      "category_path": [
+        "Open API接入指南",
+        "开发者后台管理API",
+        "聚合管理的广告源管理"
+      ],
+      "parent_slug": "OEAV0i",
+      "order": 308,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2026-04-21",
+      "content_sha256": "eeddf2a8188a571bd81d0572c09ed114093da5cf0c9758c0cdce6f1c0377a21f",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/kHxCQb.md"
+    },
+    {
+      "slug": "IdMqwu",
+      "url": "https://help.toponad.net/cn/docs/IdMqwu",
+      "title": "广告源管理（过期）",
+      "category_path": [
+        "Open API接入指南",
+        "开发者后台管理API",
+        "广告源管理（过期）"
+      ],
+      "parent_slug": "OEAV0i",
+      "order": 309,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2025-08-21",
+      "content_sha256": "5e8b18ffd575f7bcc8733bdd75b25bfc51126e2ef8ac130599326a0c221c580c",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/IdMqwu.md"
+    },
+    {
+      "slug": "yj3d9s",
+      "url": "https://help.toponad.net/cn/docs/yj3d9s",
+      "title": "广告源管理（新版v3）",
+      "category_path": [
+        "Open API接入指南",
+        "开发者后台管理API",
+        "广告源管理（新版v3）"
+      ],
+      "parent_slug": "OEAV0i",
+      "order": 310,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2025-08-21",
+      "content_sha256": "96db80ff2f94e02ec9aea7141cd952e26c3ff5d9efc3d06c745a6d5da3c71149",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/yj3d9s.md"
+    },
+    {
+      "slug": "DRjqiT",
+      "url": "https://help.toponad.net/cn/docs/DRjqiT",
+      "title": "AB测试管理",
+      "category_path": [
+        "Open API接入指南",
+        "开发者后台管理API",
+        "AB测试管理"
+      ],
+      "parent_slug": "OEAV0i",
+      "order": 311,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2025-12-16",
+      "content_sha256": "38997c23712d61c0f7715178bf69539cdaf1841c5989200eac4d305eebbb0d29",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/DRjqiT.md"
+    },
+    {
+      "slug": "RoWhLz",
+      "url": "https://help.toponad.net/cn/docs/RoWhLz",
+      "title": "报表上传",
+      "category_path": [
+        "Open API接入指南",
+        "开发者后台管理API",
+        "报表上传"
+      ],
+      "parent_slug": "OEAV0i",
+      "order": 312,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2025-08-21",
+      "content_sha256": "8f02e5683d8df4c64850a3679f247e08bfcb11fac3e1ecd03b9db6aafc64d34a",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/RoWhLz.md"
+    },
+    {
+      "slug": "fu-wu-duan-hui-diao-gui-ze",
+      "url": "https://help.toponad.net/cn/docs/fu-wu-duan-hui-diao-gui-ze",
+      "title": "服务端回调规则管理",
+      "category_path": [
+        "Open API接入指南",
+        "开发者后台管理API",
+        "服务端回调规则管理"
+      ],
+      "parent_slug": "OEAV0i",
+      "order": 313,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2025-08-21",
+      "content_sha256": "44ab9f2640d07fcc9c86b81449181911189330294f86c6cdd37afb01130c2e43",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/fu-wu-duan-hui-diao-gui-ze.md"
+    },
+    {
+      "slug": "Rf16i5",
+      "url": "https://help.toponad.net/cn/docs/Rf16i5",
+      "title": "数据报表API",
+      "category_path": [
+        "Open API接入指南",
+        "数据报表API"
+      ],
+      "parent_slug": "bbrcIF",
+      "order": 314,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2024-08-30",
+      "content_sha256": "9e4edb4e9b4638f2f30473f6b4e08bbd65e88ab6b0f5d3cab23a036b5f44baa7",
+      "has_article_body": false,
+      "status": 200,
+      "file": "docs/Rf16i5.md"
+    },
+    {
+      "slug": "dukFyc",
+      "url": "https://help.toponad.net/cn/docs/dukFyc",
+      "title": "综合报表",
+      "category_path": [
+        "Open API接入指南",
+        "数据报表API",
+        "综合报表"
+      ],
+      "parent_slug": "Rf16i5",
+      "order": 315,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2026-06-30",
+      "content_sha256": "33f1146aa9ec7e5cf616356954bf997d918b200a670fff5a99e8b8a950d59b0a",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/dukFyc.md"
+    },
+    {
+      "slug": "tWYkeU",
+      "url": "https://help.toponad.net/cn/docs/tWYkeU",
+      "title": "留存价值报表",
+      "category_path": [
+        "Open API接入指南",
+        "数据报表API",
+        "留存价值报表"
+      ],
+      "parent_slug": "Rf16i5",
+      "order": 316,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2024-04-15",
+      "content_sha256": "9e4edb4e9b4638f2f30473f6b4e08bbd65e88ab6b0f5d3cab23a036b5f44baa7",
+      "has_article_body": false,
+      "status": 200,
+      "file": "docs/tWYkeU.md"
+    },
+    {
+      "slug": "LTV-160-tian-shu-ju",
+      "url": "https://help.toponad.net/cn/docs/LTV-160-tian-shu-ju",
+      "title": "LTV（1-60天数据）",
+      "category_path": [
+        "Open API接入指南",
+        "数据报表API",
+        "留存价值报表",
+        "LTV（1-60天数据）"
+      ],
+      "parent_slug": "tWYkeU",
+      "order": 317,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2025-08-15",
+      "content_sha256": "a7220be535210785095c522f9f6bced36d21f2702b892149b681e3a8ba8dca5f",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/LTV-160-tian-shu-ju.md"
+    },
+    {
+      "slug": "liu-cun-260-tian-shu-ju",
+      "url": "https://help.toponad.net/cn/docs/liu-cun-260-tian-shu-ju",
+      "title": "留存（2-60天数据）",
+      "category_path": [
+        "Open API接入指南",
+        "数据报表API",
+        "留存价值报表",
+        "留存（2-60天数据）"
+      ],
+      "parent_slug": "tWYkeU",
+      "order": 318,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2025-08-15",
+      "content_sha256": "0275fefe1a73a58881111887a7d0dca16c8bb013544990349bae2d84e4810660",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/liu-cun-260-tian-shu-ju.md"
+    },
+    {
+      "slug": "zhan-shi-he-xin-zeng-yong-hu-160-tian-shu-ju",
+      "url": "https://help.toponad.net/cn/docs/zhan-shi-he-xin-zeng-yong-hu-160-tian-shu-ju",
+      "title": "展示和新增用户（1-60天数据）",
+      "category_path": [
+        "Open API接入指南",
+        "数据报表API",
+        "留存价值报表",
+        "展示和新增用户（1-60天数据）"
+      ],
+      "parent_slug": "tWYkeU",
+      "order": 319,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2025-05-30",
+      "content_sha256": "185eb59a49a8ca2530f12b7cf4ebef4dd82e88e737fa6f274b189221c4b95e1b",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/zhan-shi-he-xin-zeng-yong-hu-160-tian-shu-ju.md"
+    },
+    {
+      "slug": "1frPcq",
+      "url": "https://help.toponad.net/cn/docs/1frPcq",
+      "title": "分小时报表",
+      "category_path": [
+        "Open API接入指南",
+        "数据报表API",
+        "分小时报表"
+      ],
+      "parent_slug": "Rf16i5",
+      "order": 320,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2025-10-30",
+      "content_sha256": "302df926b7c372547300f006ce50efd73eb48a94e9729fe61ceb8010c3e85c4f",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/1frPcq.md"
+    },
+    {
+      "slug": "Kam0xX",
+      "url": "https://help.toponad.net/cn/docs/Kam0xX",
+      "title": "设备层级报表API",
+      "category_path": [
+        "Open API接入指南",
+        "设备层级报表API"
+      ],
+      "parent_slug": "bbrcIF",
+      "order": 321,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2024-08-30",
+      "content_sha256": "9e4edb4e9b4638f2f30473f6b4e08bbd65e88ab6b0f5d3cab23a036b5f44baa7",
+      "has_article_body": false,
+      "status": 200,
+      "file": "docs/Kam0xX.md"
+    },
+    {
+      "slug": "OJPZH2",
+      "url": "https://help.toponad.net/cn/docs/OJPZH2",
+      "title": "展示、点击设备维度报表",
+      "category_path": [
+        "Open API接入指南",
+        "设备层级报表API",
+        "展示、点击设备维度报表"
+      ],
+      "parent_slug": "Kam0xX",
+      "order": 322,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2026-03-17",
+      "content_sha256": "e262c647f3f6e1f32f9797a5f9869516d3205242052bbdcce75b355f40aa65e4",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/OJPZH2.md"
+    },
+    {
+      "slug": "guang-gao-zhan-shi-fu-wu-duan-hui-diao-S2S",
+      "url": "https://help.toponad.net/cn/docs/guang-gao-zhan-shi-fu-wu-duan-hui-diao-S2S",
+      "title": "广告展示收益服务端回调API（S2S）",
+      "category_path": [
+        "Open API接入指南",
+        "广告展示收益服务端回调API（S2S）"
+      ],
+      "parent_slug": "bbrcIF",
+      "order": 323,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2026-05-20",
+      "content_sha256": "21329e56355464158a654e4263fb2ff8cba4b02f1ec4aa965ead4b1968f602fe",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/guang-gao-zhan-shi-fu-wu-duan-hui-diao-S2S.md"
+    },
+    {
+      "slug": "htFjPU",
+      "url": "https://help.toponad.net/cn/docs/htFjPU",
+      "title": "附录",
+      "category_path": [
+        "Open API接入指南",
+        "附录"
+      ],
+      "parent_slug": "bbrcIF",
+      "order": 324,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2024-08-30",
+      "content_sha256": "9e4edb4e9b4638f2f30473f6b4e08bbd65e88ab6b0f5d3cab23a036b5f44baa7",
+      "has_article_body": false,
+      "status": 200,
+      "file": "docs/htFjPU.md"
+    },
+    {
+      "slug": "4hPdxj",
+      "url": "https://help.toponad.net/cn/docs/4hPdxj",
+      "title": "应用一级和二级分类列表",
+      "category_path": [
+        "Open API接入指南",
+        "附录",
+        "应用一级和二级分类列表"
+      ],
+      "parent_slug": "htFjPU",
+      "order": 325,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2025-05-30",
+      "content_sha256": "2203c6f5f2bb74179893c40f348124d5dfee829feb3a1ed347c201f549edba3b",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/4hPdxj.md"
+    },
+    {
+      "slug": "pCjmva",
+      "url": "https://help.toponad.net/cn/docs/pCjmva",
+      "title": "流量分组规则数据格式",
+      "category_path": [
+        "Open API接入指南",
+        "附录",
+        "流量分组规则数据格式"
+      ],
+      "parent_slug": "htFjPU",
+      "order": 326,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2025-05-30",
+      "content_sha256": "05fbd4e480a221aff9515e7bd7dbbf3541a3ac19cd90ef323efb706d53a06c46",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/pCjmva.md"
+    },
+    {
+      "slug": "FSwcAe",
+      "url": "https://help.toponad.net/cn/docs/FSwcAe",
+      "title": "三方广告平台详细参数",
+      "category_path": [
+        "Open API接入指南",
+        "附录",
+        "三方广告平台详细参数"
+      ],
+      "parent_slug": "htFjPU",
+      "order": 327,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2026-04-21",
+      "content_sha256": "2fca0ecb59520f177f8419789bb1c2e068b54645763497455d21610e33e23acc",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/FSwcAe.md"
+    },
+    {
+      "slug": "AZUgZD",
+      "url": "https://help.toponad.net/cn/docs/AZUgZD",
+      "title": "[新]三方广告平台详细参数",
+      "category_path": [
+        "Open API接入指南",
+        "附录",
+        "[新]三方广告平台详细参数"
+      ],
+      "parent_slug": "htFjPU",
+      "order": 328,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2026-07-01",
+      "content_sha256": "1fcba78407ec48ad8111ef63af8ea6ef051369ed29e6693ae373d41b80ac1286",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/AZUgZD.md"
+    },
+    {
+      "slug": "0ZYsjj",
+      "url": "https://help.toponad.net/cn/docs/0ZYsjj",
+      "title": "支持开启Header Bidding 的广告平台和广告样式",
+      "category_path": [
+        "Open API接入指南",
+        "附录",
+        "支持开启Header Bidding 的广告平台和广告样式"
+      ],
+      "parent_slug": "htFjPU",
+      "order": 329,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2026-04-17",
+      "content_sha256": "0e0572317a72b3707f02f701df7953398b2c2b8554657c3578d1db7866331170",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/0ZYsjj.md"
+    },
+    {
+      "slug": "mei-yuan-zhuan-ren-min-bi-hui-lyu",
+      "url": "https://help.toponad.net/cn/docs/mei-yuan-zhuan-ren-min-bi-hui-lyu",
+      "title": "美元转人民币汇率",
+      "category_path": [
+        "Open API接入指南",
+        "附录",
+        "美元转人民币汇率"
+      ],
+      "parent_slug": "htFjPU",
+      "order": 330,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2025-08-21",
+      "content_sha256": "6c38dd89d38b8924ce0740cdb92ccbad27d25e6db1ebb5eb4c24d9f33405ed3a",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/mei-yuan-zhuan-ren-min-bi-hui-lyu.md"
+    },
+    {
+      "slug": "san-fang-ping-tai-guang-gao-wei-chuang-jian",
+      "url": "https://help.toponad.net/cn/docs/san-fang-ping-tai-guang-gao-wei-chuang-jian",
+      "title": "三方平台广告位创建",
+      "category_path": [
+        "Open API接入指南",
+        "附录",
+        "三方平台广告位创建"
+      ],
+      "parent_slug": "htFjPU",
+      "order": 331,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2026-07-02",
+      "content_sha256": "1c4b328e775b531c71425a4158317b907f3594b98585316b7939b908ae8a6da3",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/san-fang-ping-tai-guang-gao-wei-chuang-jian.md"
+    },
+    {
+      "slug": "liu-liang-fen-zu-gui-ze-xin",
+      "url": "https://help.toponad.net/cn/docs/liu-liang-fen-zu-gui-ze-xin",
+      "title": "流量分组规则(新)",
+      "category_path": [
+        "Open API接入指南",
+        "附录",
+        "流量分组规则(新)"
+      ],
+      "parent_slug": "htFjPU",
+      "order": 332,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2026-04-21",
+      "content_sha256": "59079f1579ff5fcc5209505d93b80c3e6bd252617b3d2543ab72b092e1ed2210",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/liu-liang-fen-zu-gui-ze-xin.md"
+    },
+    {
+      "slug": "I1uS29",
+      "url": "https://help.toponad.net/cn/docs/I1uS29",
+      "title": "QA问答",
+      "category_path": [
+        "Open API接入指南",
+        "QA问答"
+      ],
+      "parent_slug": "bbrcIF",
+      "order": 333,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2024-08-30",
+      "content_sha256": "9e4edb4e9b4638f2f30473f6b4e08bbd65e88ab6b0f5d3cab23a036b5f44baa7",
+      "has_article_body": false,
+      "status": 200,
+      "file": "docs/I1uS29.md"
+    },
+    {
+      "slug": "l1PgZx",
+      "url": "https://help.toponad.net/cn/docs/l1PgZx",
+      "title": "通用",
+      "category_path": [
+        "Open API接入指南",
+        "QA问答",
+        "通用"
+      ],
+      "parent_slug": "I1uS29",
+      "order": 334,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2025-11-27",
+      "content_sha256": "d8784719655e90e207cbf8ce8381ad75a6e8bf047961ca26d3ecd6cff9e900ec",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/l1PgZx.md"
+    },
+    {
+      "slug": "nrBXX5",
+      "url": "https://help.toponad.net/cn/docs/nrBXX5",
+      "title": "开发者后台管理API",
+      "category_path": [
+        "Open API接入指南",
+        "QA问答",
+        "开发者后台管理API"
+      ],
+      "parent_slug": "I1uS29",
+      "order": 335,
+      "captured_at": "2026-07-21T08:07:23Z",
+      "site_modified": "2025-05-30",
+      "content_sha256": "b617168d26617d6c427fe5a3d6b57ba3782f893adeec660aff754c8c57d52d84",
+      "has_article_body": true,
+      "status": 200,
+      "file": "docs/nrBXX5.md"
+    }
+  ]
+}

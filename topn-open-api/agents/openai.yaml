@@ -1,0 +1,6 @@
+interface:
+  display_name: "Topn Open API"
+  short_description: "规划与执行 TopOn Open API 只读数据采集"
+  default_prompt: "Use $topn-open-api to plan a safe read-only TopOn Open API collection."
+policy:
+  allow_implicit_invocation: false

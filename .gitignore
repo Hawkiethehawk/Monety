@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+*.xlsx
+*.xlsm
+*.csv
+*.tsv
+*.key
+*.pem
+*.token
+.env
+output/
