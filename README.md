@@ -32,42 +32,12 @@ Monety/
 └── README.md
 ```
 
-## 安装
-
-将 `monety` 和 `topn-open-api` 两个目录复制到 Codex 能发现的 Skill 目录，可使用全局目录：
-
-```text
-~/.codex/skills/
-├── monety/
-└── topn-open-api/
-```
-
-也可以安装到工作区：
-
-```text
-<workspace>/.agents/skills/
-├── monety/
-└── topn-open-api/
-```
-
-主 Skill 可以单独使用；只有需要规划或调用 TopOn Open API 时，才需要安装 `topn-open-api`。运行报表脚本需要 Python 3.10 或更高版本，读取 XLSX/XLSM 还需要 `openpyxl`：
-
-```powershell
-python -m pip install openpyxl
-```
-
 ## 一键部署（Windows）
 
-远程安装（自动克隆仓库、配置 `MONETY_PROJECT_DIR`、注册 PowerShell `monety` 命令）：
+一键部署会自动完成：克隆仓库 → 检查 git / Python 3.10+ → 安装 `openpyxl` → 配置 `MONETY_PROJECT_DIR` → 注册 PowerShell `monety` 命令。项目本身即 Skill（`monety/`、`topn-open-api/`），部署后无需手动复制目录。
 
 ```powershell
 irm https://gitee.com/Hawkiethehawk/Monety/raw/master/scripts/deploy.ps1 | iex
-```
-
-本地安装（在已克隆的仓库内）：
-
-```powershell
-powershell -ExecutionPolicy Bypass -File scripts\deploy.ps1
 ```
 
 部署后新开的 PowerShell 会自动定位到项目目录，并可使用 `monety` 命令：

@@ -1,7 +1,6 @@
 ﻿# Monety 一键部署脚本 (Windows PowerShell)
 # 用法:
 #   irm https://gitee.com/Hawkiethehawk/Monety/raw/master/scripts/deploy.ps1 | iex
-#   或: powershell -ExecutionPolicy Bypass -File scripts\deploy.ps1  (在已克隆的仓库内)
 param(
     [string]$InstallDir = $PWD.Path
 )
@@ -99,8 +98,23 @@ if (Test-Path "$InstallDir\monety\SKILL.md") {
 Set-Location $InstallDir
 $InstallDir = (Get-Location).Path
 
-# ── 2. Python 依赖 ──
-Write-Host "[✓] 检查 Python 依赖..." -ForegroundColor Green
+# ── 2. 依赖检查与安装 ──
+Write-Host "[✓] 检查依赖..." -ForegroundColor Green
+
+try {
+    git --version 2>$null | Out-Null
+    Write-Host "[✓] git 已安装" -ForegroundColor Green
+} catch {
+    throw "未检测到 git，请先安装 Git for Windows：https://git-scm.com/download/win"
+}
+
+try {
+    $pyVersion = python --version 2>&1
+    Write-Host "[✓] $pyVersion" -ForegroundColor Green
+} catch {
+    throw "未检测到 Python，请先安装 Python 3.10 或更高版本：https://www.python.org/downloads/"
+}
+
 try {
     python -c "import openpyxl" 2>$null
     Write-Host "[✓] openpyxl 已安装" -ForegroundColor Green
@@ -108,6 +122,7 @@ try {
     Write-Host "[✓] 安装 openpyxl..." -ForegroundColor Green
     pip install openpyxl
 }
+Write-Host "[✓] 本项目无需 npm 依赖" -ForegroundColor Green
 
 # ── 3. 默认项目目录与 PowerShell 包装 ──
 Write-Host "[✓] 配置 monety 默认项目目录..." -ForegroundColor Green
