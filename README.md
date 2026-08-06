@@ -154,6 +154,26 @@ python topn-open-api/scripts/search_topon_docs.py "Publisher Key 鉴权" --limit
 
 帮助中心用于理解产品、指标与调用方法，不用于推断当前竞价环境、广告主预算或广告源实时表现。
 
+## 本地网页预览（Windows）
+
+预览页内容在构建时从 `monety/` 下的 md / json 文件生成，修改后需要重新构建再刷新浏览器：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File F:\Monety\scripts\build-skill-viewer.ps1
+```
+
+启动本地预览服务时不弹命令行窗口，用 `python` 加 `-WindowStyle Hidden`：
+
+```powershell
+Start-Process python -ArgumentList '-m','http.server','8888','--bind','127.0.0.1','--directory','F:\Monety\viewer' -WindowStyle Hidden
+```
+
+无头打开页面验证时，用隐藏窗口执行 `npx`，避免临时弹出 cmd 窗口：
+
+```powershell
+Start-Process -FilePath 'npx' -ArgumentList '--yes','--package','@playwright/cli','playwright-cli','open','http://127.0.0.1:8888/#module/topn-metric-catalog' -WindowStyle Hidden -Wait
+```
+
 ## Open API 预案
 
 没有 Publisher Key 也可以生成 planning-only 采集计划：
