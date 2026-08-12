@@ -50,7 +50,12 @@ $docs = foreach ($spec in $docSpecs) {
 
     $content = [System.IO.File]::ReadAllText($fullPath, [System.Text.Encoding]::UTF8)
     if ($spec.id -eq "skill") {
-        $versionMatch = [regex]::Match($content, '(?m)^version:\s*([^\r\n]+)\s*$')
+        $frontmatterMatch = [regex]::Match($content, '(?s)\A---\s*\r?\n(.*?)\r?\n---')
+        $versionMatch = if ($frontmatterMatch.Success) {
+            [regex]::Match($frontmatterMatch.Groups[1].Value, '(?m)^\s{2}version:\s*([^\r\n]+)\s*$')
+        } else {
+            [System.Text.RegularExpressions.Match]::Empty
+        }
         if ($versionMatch.Success) {
             $skillVersion = $versionMatch.Groups[1].Value.Trim()
         }
