@@ -8,8 +8,8 @@ Monety CLI — 部署与管理入口
   monety stop               停止本地网页服务
   monety restart            重启本地网页服务
   monety status             显示项目、Git 与网页服务状态
-  monety push [message]     构建 + 提交 + 推送 gitee
-  monety update             从 gitee 拉取最新版本并重新构建、重启
+  monety push [message]     构建 + 提交 + 推送 GitHub
+  monety update             从 GitHub 拉取最新版本并重新构建、重启
   monety help               显示帮助
 #>
 [CmdletBinding()]
@@ -114,11 +114,11 @@ function Invoke-Push {
     }
     git -C $ProjectRoot commit -m $Message
     git -C $ProjectRoot push origin master
-    Write-Host "✅ 已推送 gitee" -ForegroundColor Green
+    Write-Host "✅ 已推送 GitHub" -ForegroundColor Green
 }
 
 function Invoke-Update {
-    Write-Host "🔄 从 gitee 拉取最新版本..." -ForegroundColor Cyan
+    Write-Host "🔄 从 GitHub 拉取最新版本..." -ForegroundColor Cyan
     git -C $ProjectRoot pull --rebase
     Invoke-Build
     Restart-Viewer
@@ -137,8 +137,8 @@ Monety CLI
   stop               停止本地网页服务
   restart            重启本地网页服务
   status             显示项目、Git 与网页服务状态
-  push [message]     构建 + 提交 + 推送 gitee
-  update             从 gitee 拉取最新版本并重新构建、重启
+  push [message]     构建 + 提交 + 推送 GitHub
+  update             从 GitHub 拉取最新版本并重新构建、重启
   help               显示帮助
 
 环境变量:

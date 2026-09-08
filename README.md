@@ -37,7 +37,7 @@ Monety/
 一键部署会自动完成：克隆仓库 → 检查 git / Python 3.10+ → 安装 `openpyxl` → 配置 `MONETY_PROJECT_DIR` → 注册 PowerShell `monety` 命令。项目本身即 Skill（`monety/`、`topn-open-api/`），部署后无需手动复制目录。
 
 ```powershell
-irm https://gitee.com/Hawkiethehawk/Monety/raw/master/scripts/deploy.ps1 | iex
+irm https://github.com/Hawkiethehawk/Monety/raw/master/scripts/deploy.ps1 | iex
 ```
 
 部署后新开的 PowerShell 会自动定位到项目目录，并可使用 `monety` 命令：
@@ -49,8 +49,8 @@ irm https://gitee.com/Hawkiethehawk/Monety/raw/master/scripts/deploy.ps1 | iex
 | `monety stop` | 停止本地网页服务 |
 | `monety restart` | 重启本地网页服务 |
 | `monety status` | 显示项目、Git 与网页服务状态 |
-| `monety push [message]` | 构建 + 提交 + 推送 gitee |
-| `monety update` | 从 gitee 拉取最新版本并重新构建、重启 |
+| `monety push [message]` | 构建 + 提交 + 推送 GitHub |
+| `monety update` | 从 GitHub 拉取最新版本并重新构建、重启 |
 
 环境变量 `MONETY_PROJECT_DIR` 由部署脚本自动设置；网页服务端口默认 `8888`，可通过 `MONETY_PORT` 覆盖。
 

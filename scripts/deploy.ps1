@@ -1,12 +1,12 @@
 ﻿# Monety 一键部署脚本 (Windows PowerShell)
 # 用法:
-#   irm https://gitee.com/Hawkiethehawk/Monety/raw/master/scripts/deploy.ps1 | iex
+#   irm https://github.com/Hawkiethehawk/Monety/raw/master/scripts/deploy.ps1 | iex
 param(
     [string]$InstallDir = $PWD.Path
 )
 
 $ErrorActionPreference = "Stop"
-$RepoUrl = "https://gitee.com/Hawkiethehawk/Monety.git"
+$RepoUrl = "https://github.com/Hawkiethehawk/Monety.git"
 
 function Register-MonetyShellIntegration {
     param(
