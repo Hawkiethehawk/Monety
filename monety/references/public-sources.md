@@ -10,10 +10,11 @@
 
 - 官方平台文档：用于产品机制、接口、政策、商店流程和平台对象。
 - 平台帮助中心：用于聚合配置、报表字段、竞价、Waterfall、分组和实验方法。
+- 社区个人实测：用于真实流量下的经验性做法、失败模式、运维成本和实验优先级；按 B+/B/B- 标记，不替代当前应用的观测数据。
 - 厂商报告或公开研究：用于方向性趋势和相对比较，不当作目标产品的绝对基准。
 - 通用方法：公式、漏斗和实验纪律属于结构性方法，标注 GEN，不伪装成某一家平台的结论。
 
-页面核验日期：2026-08-04。页面内容、政策、费用和接口可能变化；引用时以页面当前版本和用户自己的后台数据为准。
+页面核验日期：2026-10-15。页面内容、政策、费用和接口可能变化；引用时以页面当前版本和用户自己的后台数据为准。
 
 ## IAA 公开来源
 
@@ -64,6 +65,47 @@
 | IAA-TOPON-21 | Open API 综合报表字段和口径 | [Open API 综合报表](https://help.toponad.net/cn/docs/dukFyc) |
 
 旧版 cn/docs 页面保留用于来源追溯；如果页面跳转到新地址，以同一主题的当前官方页面为准。
+
+### AdMob
+
+| 编号 | 支持范围 | 原始页面 |
+|:---:|:---|:---|
+| IAA-ADMOB-01 | Mediation、实时竞价和瀑布的机制 | [AdMob bidding 概览](https://support.google.com/admob/answer/9234488?hl=en) |
+| IAA-ADMOB-02 | Mediation A/B 测试、流量分配和测试门槛 | [AdMob mediation A/B 测试](https://support.google.com/admob/answer/9572326) |
+| IAA-ADMOB-03 | eCPM floor、填充与收益权衡 | [AdMob eCPM floor](https://support.google.com/admob/answer/3418058?hl=en) |
+| IAA-ADMOB-04 | App 与 ad-unit 级频次控制 | [AdMob frequency capping](https://support.google.com/admob/answer/6244508?hl=en) |
+| IAA-ADMOB-05 | UMP、GDPR、TCF 和 consent | [AdMob UMP 与用户同意](https://support.google.com/admob/answer/10113005?hl=en) |
+
+### Meta Audience Network
+
+| 编号 | 支持范围 | 原始页面 |
+|:---:|:---|:---|
+| IAA-META-01 | Audience Network、App Bidding 和 mediation 合作方 | [Meta Audience Network](https://developers.facebook.com/documentation/audience-network) |
+| IAA-META-02 | 广告体验、无效流量和 placement 政策 | [Audience Network 政策](https://developers.facebook.com/docs/audience-network/policy?hc_location=ufi) |
+| IAA-META-03 | app-ads.txt、授权销售方和供应链透明度 | [Meta app-ads.txt 最佳实践](https://developers.facebook.com/documentation/audience-network/optimization/best-practices/authorized-sellers-app-ads) |
+| IAA-META-04 | Reddit 评论中引用的设备测试入口；需要登录，不能作为正文证据 | [Meta Audience Network testing](https://business.facebook.com/pub/testing) |
+
+### 社区个人案例
+
+以下来源是个人帖子或社区问答。具备明确条件、前后对照或长期记录的帖子可作为 B+/B/B- 经验材料，影响优化方向和实验优先级；不作为目标应用的收入基准。快照状态和权重见 [community-monetization-cases.md](community-monetization-cases.md)。
+
+| 编号 | 支持范围 | 原始页面 |
+|:---:|:---|:---|
+| IAA-COMM-REDDIT-01 | AdMob 与 AppLovin MAX 的 50/50 对照 | [AdMob mediation vs AppLovin MAX](https://www.reddit.com/r/admob/comments/16vubir/applovin_max_vs_admob_mediation_which_is_better/) |
+| IAA-COMM-REDDIT-02 | 减少广告请求后的收入与 eCPM 变化 | [How I quadrupled my AdMob revenue](https://www.reddit.com/r/admob/comments/1s7pqxp/case_study_how_i_quadrupled_my_admob_revenue_by/) |
+| IAA-COMM-REDDIT-03 | eCPM floor 开关对照 | [eCPM Floor VS Disabled](https://www.reddit.com/r/admob/comments/190r3e9/absurd_difference_in_revenue_between_ecpm_floor/) |
+| IAA-COMM-REDDIT-04 | 多广告网络长期表现和运维成本 | [Experience with ad-networks for AdMob mediation](https://www.reddit.com/r/admob/comments/1oy8gjd/my_experience_with_the_various_adnetworks_for/) |
+| IAA-COMM-REDDIT-05 | 免费游戏 rewarded、GEO 和频控复盘 | [First $1500 from a free mobile game](https://www.reddit.com/r/gamedev/comments/1rrswso/i_made_my_first_1500_from_my_free_mobile_game/) |
+| IAA-COMM-REDDIT-06 | Meta 低 match rate 与 GEO | [Facebook mediation extremely low Match Rate](https://www.reddit.com/r/admob/comments/1p87jqo/facebook_mediation_extremely_low_match_rate/) |
+| IAA-COMM-REDDIT-07 | mediation、bidding、预加载、fallback、隐私和频控的个人建议 | [My tips to improve your revenue from ads](https://www.reddit.com/r/admob/comments/1ojk0vn/my_tips_to_improve_your_revenue_from_ads/) |
+| IAA-COMM-REDDIT-08 | AdMob Next-Gen SDK 的社区讨论；页面直连受限 | [Has anyone tried the new AdMob Android SDK](https://www.reddit.com/r/admob/comments/1qhje7b/has_anyone_tried_the_new_admob_android_google/) |
+| IAA-COMM-V2EX-01 | TopOn、穿山甲、优量汇的国内流量对照 | [同一 iOS 应用穿山甲和优量汇收益差别](https://v2ex.com/t/762911) |
+| IAA-COMM-V2EX-02 | AdMob 封号后的平台切换与收入影响 | [独立开发者往事#8](https://v2ex.com/t/938170) |
+| IAA-COMM-V2EX-03 | 独立开发者的年度下载、广告和 paywall 复盘 | [独立开发者的 2025 年终总结](https://v2ex.com/t/1183856) |
+| IAA-COMM-ZHIHU-01 | 激励视频在双倍奖励、复活等节点的经验 | [想接视频，想请教几家平台中如何选择](https://www.zhihu.com/question/53112584/answer/272598400) |
+| IAA-COMM-ZHIHU-02 | T3 流量使用自动底价的个人复盘 | [AdMob“由 Google 优化”设置底价功能需谨慎使用](https://zhuanlan.zhihu.com/p/593934108) |
+
+公开搜索未发现足够可核验的 AdMob/TopOn 小红书个人收益实测；相关营销笔记不登记为证据来源。
 
 ## IAP 公开来源
 

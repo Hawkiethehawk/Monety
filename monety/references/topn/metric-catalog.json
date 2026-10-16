@@ -699,6 +699,7 @@
       "aggregation": "none",
       "definition": "常规广告源用于瀑布流排序的人工价格；竞价广告源显示为竞价，不代表固定成交价。",
       "documentation_status": "documented",
+      "validation_note": "价格列允许数值排序价格与竞价文本标签共存；竞价标签保留为分类值，不参与数值运算。",
       "sources": ["https://help.toponad.net/cn/docs/bUh0Id"]
     },
     "ecpm_api": {
@@ -727,7 +728,7 @@
       "sources": ["https://help.toponad.net/cn/docs/bUh0Id", "https://help.toponad.net/cn/docs/dfnwQG"]
     },
     "fill_latency_seconds": {
-      "source_columns": ["填充耗时（秒）"],
+      "source_columns": ["填充耗时（秒）", "广告源填充耗时", "广告源填充耗时（秒）"],
       "display_name": "填充耗时（秒）",
       "semantic_name_en": "average_fill_latency_seconds",
       "kind": "metric",

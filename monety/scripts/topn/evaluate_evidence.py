@@ -16,6 +16,8 @@ from typing import Any, Callable
 
 
 SKIP_FORMULA_TOKENS = {"report_total_estimated_revenue", "report_total_impressions", "report_total_clicks", "report_total_revenue_api", "report_total_impressions_api", "fills_at_current_grain"}
+SHORT_WINDOW_DAYS = (2, 4, 7)
+MIN_PAIRED_HISTORY_DAYS = 14
 
 
 def read_rows(path: Path) -> list[dict[str, str]]:
@@ -214,6 +216,55 @@ def grade_window(
     }
 
 
+def short_window_description(
+    metric: str, definition: dict[str, Any], window_days: list[str],
+    daily: dict[str, dict[str, float]],
+) -> dict[str, Any]:
+    """Return descriptive statistics for one 2/4/7-day observation window."""
+    window_value = aggregate_metric(window_days, daily, metric, definition)
+    first_value = aggregate_metric([window_days[0]], daily, metric, definition)
+    last_value = aggregate_metric([window_days[-1]], daily, metric, definition)
+    absolute_change = None if first_value is None or last_value is None else last_value - first_value
+    relative_change = (
+        None if absolute_change is None or first_value in (None, 0)
+        else absolute_change / abs(first_value)
+    )
+    if absolute_change is None or absolute_change == 0:
+        direction = "flat" if absolute_change == 0 else None
+    else:
+        direction = "up" if absolute_change > 0 else "down"
+    return {
+        "grade": "C",
+        "reason": "只有一个短观察窗口；输出窗口汇总和首末日变化，不作长期稳定性或因果结论。",
+        "analysis_mode": "short_window_descriptive",
+        "window_value": window_value,
+        "first_day_value": first_value,
+        "last_day_value": last_value,
+        "absolute_change": absolute_change,
+        "relative_change": relative_change,
+        "direction": direction,
+        "confidence_interval_95_for_change": None,
+        "confidence_interval_80_for_change": None,
+        "historical_noise_floor": None,
+        "practical_relative_change_threshold": None,
+        "bootstrap_samples": 0,
+    }
+
+
+def cap_short_comparison(candidate: dict[str, Any]) -> dict[str, Any]:
+    """Keep paired short-window calculations, but prevent them from becoming A/B claims."""
+    raw_grade = candidate.get("grade")
+    output = {**candidate, "grade": "C"}
+    if raw_grade and raw_grade != "C":
+        output["uncapped_grade"] = raw_grade
+    output["reason"] = (
+        str(candidate.get("reason") or "")
+        + " 该窗口少于 14 个可用日期，最终按短窗口观察级别 C 输出。"
+    )
+    output["analysis_mode"] = "short_window_paired_comparison"
+    return output
+
+
 def evaluate(metadata_path: Path, quality_path: Path | None, windows: list[int], iterations: int, minimum_relative_change: float) -> dict[str, Any]:
     metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
     quality = json.loads(quality_path.read_text(encoding="utf-8")) if quality_path and quality_path.exists() else None
@@ -222,6 +273,8 @@ def evaluate(metadata_path: Path, quality_path: Path | None, windows: list[int],
     dates, daily, max_rows_per_day = daily_values(rows, definitions)
     grade_cap = (quality or {}).get("evidence_grade_cap")
     trust = metadata.get("trust_status")
+    report_type = metadata.get("report_type") or {}
+    report_period = metadata.get("report_period_from_filename") or metadata.get("date_range")
 
     if trust == "fixture" or grade_cap == "D":
         return {
@@ -229,11 +282,26 @@ def evaluate(metadata_path: Path, quality_path: Path | None, windows: list[int],
             "reason": "数据被标记为结构样例或质量审计阻断，只能测试流程。",
             "source_metadata": str(metadata_path.resolve()), "metric_results": [],
         }
-    if len(dates) < 14:
+    if not dates:
+        if report_type.get("id") == "mediation_management_report" and report_period:
+            return {
+                "contract_version": 1, "status": "snapshot_only", "overall_grade": "C",
+                "reason": "聚合管理报表是按文件日期保存的广告源快照，没有逐行日期；可做横截面结构分析，不构造时间趋势。",
+                "source_metadata": str(metadata_path.resolve()), "available_days": 1,
+                "analysis_scope": "single_snapshot", "snapshot_period": report_period,
+                "metric_results": [],
+            }
         return {
             "contract_version": 1, "status": "insufficient_history", "overall_grade": "D",
-            "reason": "少于 14 个可用日期，无法形成最短的等长 7 日前后窗口。",
+            "reason": "没有可解析日期，无法形成时间窗口；先补充日期列或文件日期上下文。",
             "source_metadata": str(metadata_path.resolve()), "available_days": len(dates), "metric_results": [],
+        }
+    if len(dates) == 1:
+        return {
+            "contract_version": 1, "status": "snapshot_only", "overall_grade": "C",
+            "reason": "只有一个可用日期；可做单日观察，不形成趋势或因果结论。",
+            "source_metadata": str(metadata_path.resolve()), "available_days": 1,
+            "analysis_scope": "single_day", "metric_results": [],
         }
 
     eligible: list[str] = []
@@ -246,32 +314,63 @@ def evaluate(metadata_path: Path, quality_path: Path | None, windows: list[int],
             continue
         aggregation = str(definition.get("aggregation", ""))
         if formula:
-            if names and all(all(name in daily[day] for name in names) for day in dates[-14:]):
+            eligible_dates = dates[-min(len(dates), MIN_PAIRED_HISTORY_DAYS):]
+            if names and all(all(name in daily[day] for name in names) for day in eligible_dates):
                 eligible.append(field)
         elif definition.get("data_type") in {"number", "currency"} and ("sum" in aggregation or "depends_on_statistic_type" in aggregation):
-            if all(field in daily[day] for day in dates[-14:]):
+            eligible_dates = dates[-min(len(dates), MIN_PAIRED_HISTORY_DAYS):]
+            if all(field in daily[day] for day in eligible_dates):
                 eligible.append(field)
 
     results: list[dict[str, Any]] = []
     rank = {"A": 3, "B": 2, "C": 1, "D": 0}
+    requested_windows = sorted({window for window in windows if window > 0})
+    short_history = len(dates) < MIN_PAIRED_HISTORY_DAYS
     for metric in eligible:
         candidates: list[dict[str, Any]] = []
-        for window in sorted(set(windows)):
+        for window in requested_windows:
             if len(dates) < 2 * window:
+                if len(dates) >= window:
+                    current_days = dates[-window:]
+                    candidate = short_window_description(metric, definitions[metric], current_days, daily)
+                    candidate.update({
+                        "window_days": window,
+                        "requested_window_days": window,
+                        "current_period": {"start": current_days[0], "end": current_days[-1]},
+                    })
+                    candidates.append(candidate)
                 continue
             baseline_days = dates[-2 * window:-window]
             current_days = dates[-window:]
             candidate = grade_window(metric, definitions[metric], baseline_days, current_days, dates, daily, iterations, minimum_relative_change)
+            if short_history:
+                candidate = cap_short_comparison(candidate)
             candidate.update({
                 "window_days": window,
+                "requested_window_days": window,
                 "baseline_period": {"start": baseline_days[0], "end": baseline_days[-1]},
                 "current_period": {"start": current_days[0], "end": current_days[-1]},
             })
             candidates.append(candidate)
+        if not candidates and short_history:
+            current_days = dates
+            candidate = short_window_description(metric, definitions[metric], current_days, daily)
+            candidate.update({
+                "window_days": len(current_days),
+                "requested_window_days": requested_windows[-1] if requested_windows else None,
+                "current_period": {"start": current_days[0], "end": current_days[-1]},
+                "window_fallback": True,
+            })
+            candidates.append(candidate)
         if not candidates:
             continue
-        decisive = [item for item in candidates if item["grade"] in {"A", "B"}]
-        selected = min(decisive, key=lambda item: item["window_days"]) if decisive else max(candidates, key=lambda item: item["window_days"])
+        if short_history:
+            # For a launch/test snapshot, the requested observation horizon is more useful
+            # than selecting a noisy two-day comparison hidden inside a longer short window.
+            selected = max(candidates, key=lambda item: item["window_days"])
+        else:
+            decisive = [item for item in candidates if item["grade"] in {"A", "B"}]
+            selected = min(decisive, key=lambda item: item["window_days"]) if decisive else max(candidates, key=lambda item: item["window_days"])
         if grade_cap in rank and rank[selected["grade"]] > rank[grade_cap]:
             selected = {**selected, "uncapped_grade": selected["grade"], "grade": grade_cap,
                         "reason": selected["reason"] + f" 数据质量审计将最终等级限制为 {grade_cap}。"}
@@ -288,14 +387,21 @@ def evaluate(metadata_path: Path, quality_path: Path | None, windows: list[int],
         overall = grade_cap
     return {
         "contract_version": 1,
-        "status": "evaluated",
+        "status": "short_window" if short_history else "evaluated",
         "overall_grade": overall,
+        "reason": (
+            "短窗口用于投放测试观察；已输出 2/4/7 日窗口可用范围、窗口汇总和首末日变化，不把结果解释为长期稳定或因果证据。"
+            if short_history else None
+        ),
         "source_metadata": str(metadata_path.resolve()),
         "quality_audit": str(quality_path.resolve()) if quality_path else None,
         "method": {
-            "windows_days": sorted(set(windows)), "bootstrap_iterations": iterations,
+            "windows_days": requested_windows, "short_window_days": list(SHORT_WINDOW_DAYS),
+            "bootstrap_iterations": iterations,
             "minimum_relative_change": minimum_relative_change,
-            "selection": "选择最短的 A/B 级窗口；若均未达到，则保留最长可用窗口。",
+            "selection": "有独立基线时选择最短的 A/B 级等长窗口；短历史优先保留最长可用的 2/4/7 日观察窗口。",
+            "paired_window_rule": "只有至少 2×窗口天数时才做前后周期比较；否则进入单窗口描述模式。",
+            "short_window_grade_cap": "可用日期少于 14 天时，短窗口最终等级不超过 C；如存在配对计算，保留 uncapped_grade 供复核。",
             "no_fixed_dau_threshold": True,
             "max_rows_per_day": max_rows_per_day,
         },
@@ -308,7 +414,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("metadata", type=Path)
     parser.add_argument("--quality", type=Path)
-    parser.add_argument("--windows", default="7,14,28,56")
+    parser.add_argument("--windows", default="2,4,7,14,28,56")
     parser.add_argument("--bootstrap-iterations", type=int, default=2000)
     parser.add_argument("--min-relative-change", type=float, default=0.0)
     parser.add_argument("--output", type=Path)

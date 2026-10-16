@@ -1,8 +1,8 @@
 ---
 name: monety
-description: 以 IAA 为主线的应用商业化设计、广告聚合配置、上线验收、收益诊断、实验迭代、TopOn CSV/TSV/XLSX/XLSM 报表分析、买量回收和产品研究 Skill；按需保留 IAP 的订阅、付费墙、定价、续订、LTV 和退款常识。用户讨论应用内广告、广告位、填充、展示、eCPM、TopOn、MAX、AdMob、TopOn 报表、数据质量、漏斗诊断、商业化配置、收益波动或 IAA/IAP 混合变现时使用。
+description: 以 IAA 为主线的应用商业化设计、广告聚合配置、上线验收、收益诊断、实验迭代、社区个人实测研究、TopOn CSV/TSV/XLSX/XLSM 报表分析、买量回收和产品研究 Skill；按需保留 IAP 的订阅、付费墙、定价、续订、LTV 和退款常识。用户讨论应用内广告、广告位、填充、展示、eCPM、TopOn、MAX、AdMob、社区变现经验、数据质量、漏斗诊断、商业化配置、收益波动或 IAA/IAP 混合变现时使用。
 metadata:
-  version: 1.1
+  version: 1.2
 ---
 
 # Monety
@@ -15,12 +15,13 @@ metadata:
 
 ## 工作流程
 
-1. 将问题归类为设计、配置、上线、诊断、实验、报表分析、买量回收或产品研究。
+1. 将问题归类为设计、配置、上线、诊断、实验、报表分析、社区经验研究、买量回收或产品研究。
 2. 固定应用、版本、地区、用户阶段、广告位、广告形式、流量组、广告源、时间和数据口径。
 3. 先确认用户是否到达广告场景，再按“触发 → 请求 → 响应/填充 → 可展示 → 展示”定位；收益问题拆成展示量与 eCPM。
-4. 若输入是报表，先识别类型、标准化字段、审计质量和证据等级，再进行归因或建议。
-5. 输出证据、异常节点、最小改动、观察指标、体验护栏和回退条件。
-6. 新应用或新配置必须经过发行前准备、需求确认、平台配置、参数验收、正式启用、复盘调整六阶段。
+4. 若输入是报表，先识别类型、标准化字段、审计质量和证据等级，再进行归因或建议；若输入是社区帖子，先读取正文快照、递归附属链接和抓取状态。
+5. 社区经验可以影响优化方向和实验优先级，但必须把原文条件转译为本地可验证指标，不把个案数字直接复制为配置。
+6. 输出证据、异常节点、最小改动、观察指标、体验护栏和回退条件。
+7. 新应用或新配置必须经过发行前准备、需求确认、平台配置、参数验收、正式启用、复盘调整六阶段。
 
 ## 参考文件路由
 
@@ -37,6 +38,9 @@ metadata:
 | TopOn 分析报告和实验计划输出模板 | [references/topn/report-output.md](references/topn/report-output.md)、[assets/topn/analysis-report-template.md](assets/topn/analysis-report-template.md)、[assets/topn/experiment-plan-template.md](assets/topn/experiment-plan-template.md) |
 | 买量回收、CAC、LTV、ROAS、归因和放量 | [references/user-acquisition-and-payback.md](references/user-acquisition-and-payback.md) |
 | 市场筛选、AppMagic、产品拆解和匿名案例 | [references/product-research-and-cases.md](references/product-research-and-cases.md) |
+| Reddit、知乎、V2EX 个人变现案例、经验性策略与 AdMob/TopOn/Meta 优化排序 | [references/community-monetization-cases.md](references/community-monetization-cases.md) |
+| 社区和平台网页文本快照、抓取状态与离线摘录 | [references/community-snapshots.md](references/community-snapshots.md) |
+| 社区网页 PDF 快照、递归附属链接和访问状态 | [references/community-snapshot-pdf-index.md](references/community-snapshot-pdf-index.md) |
 | IAP 指标、付费漏斗、续订、流失、退款和诊断 | [references/iap-metrics-funnel-diagnostics.md](references/iap-metrics-funnel-diagnostics.md) |
 | IAP 付费墙、定价、试用、商店机制、运营和合规 | [references/iap-paywall-pricing-ops.md](references/iap-paywall-pricing-ops.md) |
 | 公开来源、引用编号、页面标题、原始 URL 和来源层级 | [references/public-sources.md](references/public-sources.md) |
@@ -53,26 +57,43 @@ metadata:
 python scripts/topn/run_topn_analysis.py <报表或目录> --project <项目名> --trust-status observed --surface report
 ```
 
-该入口依次识别综合、漏斗或聚合管理报表，映射规范字段，隔离汇总行和混合粒度，生成 Data Analytics artifact，审计完整性/唯一性/有效性/一致性/时间连续性，评估 7、14、28、56 日自适应证据窗口，并输出 `analysis-manifest.json`。单独检查结构时运行 `python scripts/topn/inspect_topon_report.py <report.xlsx> --output <inspection.json>`；字段无法映射时显式提供 `规范字段 -> 原始列名` JSON，不让分析工具猜列名或粒度。
+该入口依次识别综合、漏斗或聚合管理报表，映射规范字段，隔离汇总行和混合粒度，生成 Data Analytics artifact，审计完整性/唯一性/有效性/一致性/时间连续性，评估 2、4、7、14、28、56 日自适应证据窗口，并输出 `analysis-manifest.json`。2、4、7 日不足以形成等长前后周期时，保留窗口内描述性结果并最高标记 C 级，不伪造基线。单独检查结构时运行 `python scripts/topn/inspect_topon_report.py <report.xlsx> --output <inspection.json>`；字段无法映射时显式提供 `规范字段 -> 原始列名` JSON，不让分析工具猜列名或粒度。
 
 现实数据的主要结论只能由 `[观测]` 和 `[计算]` 支持；TopOn 帮助中心属于 `[文档]`，未排除的原因属于 `[推断]`，拟验证动作属于 `[建议]`。结论同时标注 A/B/C/D：D 或质量 `blocked` 时停止归因和配置建议，质量 `limited` 时关键结论不超过 C 级。不要设置统一 DAU 门槛，按实际分母、历史噪声、完整窗口和业务最小变化判断证据强度。
 
 分析现实数据时必须把 `data-quality.json`、`evidence-evaluation.json` 和 `data-analytics-artifact.json` 交给 Data Analytics：质量问题走 `analyze-data-quality`，指标变化走 `metric-diagnostics`，策略取舍走 `product-business-analysis`，需要交付报告走 `build-report`。TopOn Open API 的鉴权和采集仍显式交给独立的 `$topn-open-api`，不得在本 Skill 中处理密钥或绕过采集边界。
 
+## 社区经验研究与证据转化
+
+社区个人实测不是低价值噪声。对于广告请求、预加载、floor、频控、广告位设计、需求源组合和账号风险等平台文档难以覆盖的实践问题，社区经验可以作为优化候选、问题排查顺序和实验优先级的依据。使用时按以下权重判断：
+
+| 经验权重 | 适用条件 | 允许支持的结论 |
+|:---:|:---|:---|
+| B+ | 多个独立作者的方向一致，且流量、GEO、广告形式、版本或实验配置与目标接近 | 可提出优先实验方向和条件化策略建议；仍需本地指标确认 |
+| B | 单个作者有明确时间、流量、配置、前后对照或长期记录 | 可支持经验性优化方向、排查顺序和实验设计；不能单独证明因果或行业基准 |
+| B- | 有具体做法但缺少对照、分母、关键条件不完整或存在利益关系 | 只能作为低优先级候选或补充背景 |
+| C | 营销号、厂商宣传或只给收益承诺的内容 | 不提升建议优先级，只提取可复测的机制线索 |
+
+将社区经验写入分析时，至少保留：原作者条件、原文日期、页面可读性状态、PDF 捕获状态、经验权重、可迁移机制、目标应用的验证指标、实验分组、成功指标、体验护栏和回退条件。经验权重先按原文条件、对照质量、长期记录和利益关系判断；`text-fallback` 只降低页面完整性信心，不自动降低经验权重，除非正文或关键条件确实缺失。`indexed-excerpt`、`blocked`、`login-required` 和 `mismatch` 只能提示搜索方向，不得作为已核验经验。
+
+社区经验与官方机制的分工是：官方文档定义平台能做什么、参数如何生效和政策边界；个人实测补充在真实流量下哪些做法可能有效、失败方式和运维成本。两者冲突时，不删除社区经验，而是保留为条件化经验，并优先设计能区分两种解释的本地实验。
+
 ## 判断规则
 
-- 分开写事实、假设、建议和待验证项；证据不足时给验证方法，不补造行业阈值。
-- TopOn 报表结论按 `[文档]`、`[观测]`、`[计算]`、`[推断]`、`[建议]`区分信息角色，并写明证据等级。
+- 分开写事实、经验、假设、建议和待验证项；证据不足时给验证方法，不补造行业阈值。
+- TopOn 报表结论按 `[文档]`、`[观测]`、`[计算]`、`[经验]`、`[推断]`、`[建议]`区分信息角色，并写明证据等级。
 - 涉及公开平台事实时使用来源注册表的编号和原始链接；注明官方、平台文档、第三方报告或通用方法。
+- 社区帖子可以支持 `[经验]` 和 `[建议]`，也可以改变实验优先级；只有目标应用的 `[观测]`、`[计算]` 或合格实验结果才能支持当前应用的因果结论。
+- 当多个独立社区案例在条件相近时方向一致，优先把该方向列为候选实验；当案例条件明显不同，保留差异并降低权重，不做简单投票。
 - 比较数据时固定时间、版本、地区、用户阶段、广告位和统计口径。
 - 客户端事件、聚合估算、广告源回传、结算数据和归因数据不能直接混算。
 - `estimated_revenue` 是 TopOn 预估收益，`revenue_api` 是第三方广告平台报表收益；`impressions` 是 TopOn SDK 展示回调，`impressions_api` 是第三方平台报表展示，二者只做对账。
 - `estimated_ecpm = estimated_revenue / impressions * 1000`；ARPDAU、填充率、展示率、竞价响应率和竞胜率必须从规范分子/分母重算，不能平均行级比率。
 - DAU、DEU、留存率、ARPU、ARPDAU、eCPM 和比率不能跨重复粒度直接求和；聚合管理报表的 Total 行请求与广告源明细请求不能混合。
-- 当前周期与基线周期必须覆盖相同数量的完整自然日；缺失、接口未返回和真实零值必须区分。
+- 当前周期与基线周期必须覆盖相同数量的完整自然日；2、4、7 日单窗口可用于投放测试观察，但缺失、接口未返回和真实零值必须区分，且单窗口不直接升级为长期结论。
 - 具体流量规则优先于宽泛规则；默认组必须能够承接未命中流量。
 - 调整前保存配置快照，一次只改一个主要变量，并提前写明观察范围、护栏和回退条件。
-- 不把单一案例的广告频率、地区、价格或表现当作通用规则。
+- 不把单一案例的广告频率、地区、价格或表现当作通用规则，但可以据此安排排查顺序、提出条件化策略和设计本地实验。
 - 不依据只有不可读取内容或空模板的材料形成事实判断。
 
 ## 输出规范
@@ -86,5 +107,7 @@ python scripts/topn/run_topn_analysis.py <报表或目录> --project <项目名>
 5. 验证：生效检查、观察范围、体验护栏和回退条件。
 
 TopOn 报表交付还要写明数据范围、粒度、币种、时区、预估/结算口径、质量状态、证据等级、主要发现、贡献拆解、限制、建议实验和官方文档引用，并将“发生了什么”和“为什么发生”分开。
+
+社区经验研究交付还要写明：经验权重、原文条件、快照状态、可迁移机制、与目标应用的差异、建议优先级、本地验证指标、体验护栏和回退条件。使用社区材料时，输出标签优先采用 `[个人实测]`、`[社区共识]`、`[待验证经验]`，不要把个人收益数字改写成行业基准。
 
 配置流程按“输入、操作、检查、交付”表达。公开来源链接和加粗的“编号-中文标题”引用可以保留；不要输出人员、账户、项目、应用名、包名、真实标识、凭据、内部表格明细、原始业务数值或其他未授权内部材料。

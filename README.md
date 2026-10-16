@@ -81,7 +81,7 @@ python monety/scripts/topn/run_topn_analysis.py <报表或目录> `
   --surface report
 ```
 
-该入口依次完成：识别综合、漏斗或聚合管理报表 → 映射规范字段 → 隔离汇总行与混合粒度 → 生成 Data Analytics artifact → 审计完整性/唯一性/有效性/一致性/时间连续性 → 评估 7、14、28、56 日自适应证据窗口 → 输出 `analysis-manifest.json`。仅检查结构时：
+该入口依次完成：识别综合、漏斗或聚合管理报表 → 映射规范字段 → 隔离汇总行与混合粒度 → 生成 Data Analytics artifact → 审计完整性/唯一性/有效性/一致性/时间连续性 → 评估 2、4、7、14、28、56 日自适应证据窗口 → 输出 `analysis-manifest.json`。2、4、7 日不足以形成等长前后周期时，输出短窗口描述并最高标记 C 级。仅检查结构时：
 
 ```powershell
 python monety/scripts/topn/inspect_topon_report.py <report.xlsx> --output <inspection.json>
@@ -218,4 +218,4 @@ python -m unittest discover -s topn-open-api/scripts -p "test_*.py" -v
 - 客户端事件、聚合估算、广告源回传、结算数据和归因数据不能直接混算；
 - 聚合管理报表的 Total 行请求与广告源明细请求不能混合；
 - 缺少分子或分母的导出比例不能跨行安全汇总；
-- 当前周期与基线周期必须覆盖相同数量的完整自然日，缺失、接口未返回与真实零值必须区分。
+- 当前周期与基线周期必须覆盖相同数量的完整自然日；2、4、7 日单窗口可用于投放测试观察，但缺失、接口未返回与真实零值必须区分。

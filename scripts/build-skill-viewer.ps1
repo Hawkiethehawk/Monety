@@ -36,6 +36,9 @@ $docSpecs = @(
     @{ id = "topn-metric-catalog"; path = "references/topn/metric-catalog.json"; title = "TopOn 指标目录"; group = "TopOn 分析"; tag = "TopOn"; description = "规范字段、定义、公式、来源和聚合规则"; kind = "topn" },
     @{ id = "user-acquisition-and-payback"; path = "references/user-acquisition-and-payback.md"; title = "买量回收与商业化协同"; group = "增长支持"; tag = "Growth"; description = "CAC、LTV、ROAS、事件回传、归因和放量门禁"; kind = "support" },
     @{ id = "product-research-and-cases"; path = "references/product-research-and-cases.md"; title = "产品研究与匿名案例"; group = "增长支持"; tag = "Research"; description = "AppMagic 筛选、产品拆解、场景审查和案例迁移"; kind = "support" },
+    @{ id = "community-monetization-cases"; path = "references/community-monetization-cases.md"; title = "社区个人变现案例与优化研究"; group = "增长支持"; tag = "Research"; description = "Reddit、知乎、V2EX 的个人实测与 AdMob、TopOn、Meta 优化假设"; kind = "support" },
+    @{ id = "community-snapshots"; path = "references/community-snapshots.md"; title = "社区与平台网页文本快照"; group = "来源"; tag = "Sources"; description = "公开页面摘录、抓取状态、发布日期和离线核验边界"; kind = "source" },
+    @{ id = "community-snapshot-pdf-index"; path = "references/community-snapshot-pdf-index.md"; title = "社区网页 PDF 快照索引"; group = "来源"; tag = "Sources"; description = "Reddit 正文与递归附属链接的 PDF 文件入口、状态和使用边界"; kind = "source" },
     @{ id = "iap-metrics-funnel-diagnostics"; path = "references/iap-metrics-funnel-diagnostics.md"; title = "IAP 指标、漏斗与诊断"; group = "IAP 按需"; tag = "IAP"; description = "订阅指标、LTV、付费漏斗、续订、流失和退款"; kind = "iap" },
     @{ id = "iap-paywall-pricing-ops"; path = "references/iap-paywall-pricing-ops.md"; title = "IAP 付费墙、定价与运营"; group = "IAP 按需"; tag = "IAP"; description = "付费墙、定价、试用、商店机制、实验和合规"; kind = "iap" },
     @{ id = "public-sources"; path = "references/public-sources.md"; title = "公开来源与引用注册表"; group = "来源"; tag = "Sources"; description = "公开 URL、来源层级、引用编号和原始页面"; kind = "source" }

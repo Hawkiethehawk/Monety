@@ -9,7 +9,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from init_topon_project import initialize_project
-from report_io import detect_mapping, detect_report_type, is_summary_row, load_metric_catalog
+from report_io import canonical_rows, detect_mapping, detect_report_type, is_summary_row, load_metric_catalog
 
 
 class ReportTypeTests(unittest.TestCase):
@@ -58,6 +58,19 @@ class ReportTypeTests(unittest.TestCase):
         self.assertEqual(mapping["ecpm_api"], "eCPM API")
         self.assertEqual(mapping["fill_latency_seconds"], "填充耗时（秒）")
 
+    def test_normal_topon_variants_are_mapped(self) -> None:
+        headers = ["日期", "预估收益", "展示", "广告源填充耗时", "价格"]
+        mapping, conflicts = detect_mapping(headers)
+        self.assertFalse(conflicts)
+        self.assertEqual(mapping["fill_latency_seconds"], "广告源填充耗时")
+        self.assertEqual(mapping["sort_price"], "价格")
+        row = canonical_rows([{
+            "日期": "2026-09-08", "预估收益": "0.43", "展示": 2,
+            "广告源填充耗时": "0.75", "价格": "竞价",
+        }], mapping)[0]
+        self.assertEqual(row["sort_price"], "竞价")
+        self.assertEqual(row["fill_latency_seconds"], 0.75)
+
     def test_summary_rows(self) -> None:
         self.assertTrue(is_summary_row({"date": "汇总", "statistic_type": "次数"}))
         self.assertTrue(is_summary_row({"日期": "2026-07-07 ~ 2026-07-21"}))
@@ -75,6 +88,8 @@ class ReportTypeTests(unittest.TestCase):
         self.assertEqual(metrics["impression_share"]["formula"], "impressions / report_total_impressions")
         self.assertEqual(metrics["estimated_revenue_share"]["validation_status"], "recomputable_from_export_summary")
         self.assertEqual(metrics["impression_share"]["validation_status"], "recomputable_from_export_summary")
+        self.assertIn("竞价文本标签", metrics["sort_price"]["validation_note"])
+        self.assertIn("广告源填充耗时", metrics["fill_latency_seconds"]["source_columns"])
         self.assertEqual(metrics["bidding_response_rate"]["validation_status"], "definition_known_export_inputs_missing")
         self.assertEqual(metrics["ad_source_fill_rate"]["validation_status"], "definition_known_export_inputs_missing")
         self.assertEqual(metrics["ad_ready_rate"]["validation_status"], "definition_known_export_inputs_missing")

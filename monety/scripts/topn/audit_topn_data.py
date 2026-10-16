@@ -12,10 +12,25 @@ from datetime import date, timedelta
 from pathlib import Path
 from typing import Any
 
+from report_io import is_sort_price_bidding_label
+
 
 RATE_OVER_ONE_ALLOWED = {"ad_trigger_rate", "impressions_per_dau"}
 SIGNED_RATE_FIELDS = {"revenue_gap_rate", "impression_gap_rate"}
 NONNEGATIVE_KINDS = {"number", "currency", "currency_per_device", "currency_per_thousand_impressions"}
+COUNT_UNITS = {"devices", "requests", "bid_requests", "impressions", "clicks", "wins"}
+COUNT_FIELDS_WITHOUT_UNIT = {
+    "app_starts", "config_fetches", "traffic_requests", "traffic_fills", "ad_scene_arrivals",
+    "is_ready_queries", "display_triggers", "display_trigger_successes", "request_or_bid",
+}
+MEDIATION_SPARSE_FIELDS = {
+    "estimated_revenue", "revenue_api", "impressions", "impressions_api", "clicks",
+    "estimated_revenue_share", "revenue_api_share", "impression_share", "impressions_api_share",
+    "click_share", "clicks_api_share", "estimated_ecpm", "ecpm_api", "ctr", "fill_rate",
+    "impression_rate", "impression_gap_rate", "bidding_response_rate", "bidding_response_ecpm",
+    "bidding_win_rate", "request_or_bid", "requests", "responses", "fill_latency_seconds",
+}
+SORT_PRICE_MIXED_TYPE = "currency_per_thousand_impressions_or_bidding_label"
 
 
 def read_rows(path: Path) -> list[dict[str, Any]]:
@@ -47,6 +62,8 @@ def audit(metadata_path: Path) -> dict[str, Any]:
     definitions = metadata.get("metric_definitions", {})
     fields = metadata.get("normalized_fields") or (list(rows[0]) if rows else [])
     findings: list[dict[str, Any]] = []
+    report_type = metadata.get("report_type") or {}
+    is_mediation_report = report_type.get("id") == "mediation_management_report"
 
     if not rows:
         findings.append(finding("critical", "empty_normalized_dataset", "标准化数据集没有数据行。"))
@@ -65,13 +82,24 @@ def audit(metadata_path: Path) -> dict[str, Any]:
             findings.append(finding("high", "duplicate_candidate_grain", "候选粒度键不唯一，可能存在重复导出、混合粒度或缺失维度。", {"grain": grain_fields, "rows": duplicate_keys}))
 
     null_rates: dict[str, float] = {}
+    expected_sparse_fields: dict[str, float] = {}
     for field in fields:
         missing = sum(row.get(field) in (None, "") for row in rows)
         null_rates[field] = missing / max(len(rows), 1)
         if null_rates[field] == 1:
             findings.append(finding("high", "fully_null_field", f"字段 {field} 全为空。"))
         elif null_rates[field] >= 0.2:
-            findings.append(finding("medium", "high_null_rate", f"字段 {field} 的空值率较高。", {"field": field, "rate": null_rates[field]}))
+            if is_mediation_report and field in MEDIATION_SPARSE_FIELDS:
+                expected_sparse_fields[field] = null_rates[field]
+            else:
+                findings.append(finding("medium", "high_null_rate", f"字段 {field} 的空值率较高。", {"field": field, "rate": null_rates[field]}))
+
+    if expected_sparse_fields:
+        findings.append(finding(
+            "low", "expected_sparse_mediation_metrics",
+            "聚合管理明细中未请求、未填充或未产生展示的广告源，相关指标为空属于正常结构；空值不自动当作零值。",
+            {"fields": expected_sparse_fields},
+        ))
 
     invalid_numeric: dict[str, int] = {}
     negative_values: dict[str, int] = {}
@@ -82,13 +110,25 @@ def audit(metadata_path: Path) -> dict[str, Any]:
             continue
         values = [row.get(field) for row in rows if row.get(field) not in (None, "")]
         parsed = [number(value) for value in values]
-        invalid_numeric[field] = sum(value is None for value in parsed)
         dtype = definition.get("data_type")
+        if dtype == SORT_PRICE_MIXED_TYPE:
+            invalid_numeric[field] = sum(
+                number(value) is None and not is_sort_price_bidding_label(value)
+                for value in values
+            )
+        elif dtype in NONNEGATIVE_KINDS or dtype == "rate":
+            invalid_numeric[field] = sum(value is None for value in parsed)
+        else:
+            invalid_numeric[field] = 0
         valid = [value for value in parsed if value is not None]
         if dtype in NONNEGATIVE_KINDS or definition.get("unit") in {"requests", "impressions", "clicks", "wins"}:
             negative_values[field] = sum(value < 0 for value in valid)
         aggregation = str(definition.get("aggregation", ""))
-        if dtype == "number" and ("sum" in aggregation or "count" in aggregation or "depends_on_statistic_type" in aggregation):
+        if dtype == "number" and (
+            definition.get("unit") in COUNT_UNITS
+            or field in COUNT_FIELDS_WITHOUT_UNIT
+            or aggregation == "depends_on_statistic_type"
+        ):
             non_integer_counts[field] = sum(abs(value - round(value)) > 1e-9 for value in valid)
         if dtype == "rate":
             invalid_rates[field] = sum(
@@ -109,6 +149,19 @@ def audit(metadata_path: Path) -> dict[str, Any]:
     for field, count in invalid_rates.items():
         if count:
             findings.append(finding("high", "rate_out_of_range", f"比率字段 {field} 超出允许范围。", {"field": field, "rows": count}))
+
+    if is_mediation_report and "sort_price" in fields:
+        labels = sorted({
+            str(row.get("sort_price")).strip()
+            for row in rows
+            if is_sort_price_bidding_label(row.get("sort_price"))
+        })
+        if labels:
+            findings.append(finding(
+                "low", "mixed_sort_price_semantics",
+                "聚合管理“价格”列同时支持数值排序价格和竞价文本标签；竞价标签保留为分类值，不参与数值运算。",
+                {"labels": labels, "numeric_rows": sum(number(row.get("sort_price")) is not None for row in rows)},
+            ))
 
     dates = sorted({row.get("date") for row in rows if row.get("date")})
     missing_dates: list[str] = []

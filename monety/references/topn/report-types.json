@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "semantic_reference": "metric-catalog.json",
   "report_types": [
     {
@@ -13,8 +13,8 @@
         "广告源请求", "竞价", "竞价响应eCPM", "竞价响应率",
         "广告源填充率", "竞胜率", "竞价胜出数", "展示 API", "展示率", "展示占比"
       ],
-      "grain": "通常一行对应一个日期及当前筛选维度组合；导出文件可能包含首行区间汇总。",
-      "analysis_rule": "使用 normalize_comprehensive_report.py 删除或隔离区间汇总行。预估收益映射为 estimated_revenue，收益 API 映射为 revenue_api；DAU、DEU、ARPDAU、eCPM 和比率不可跨重复维度直接求和。"
+      "grain": "通常一行对应一个日期及当前筛选维度组合；导出文件常包含首行区间汇总，随后是按日期和广告位/样式拆分的明细。",
+      "analysis_rule": "使用 normalize_comprehensive_report.py 隔离区间汇总行。预估收益映射为 estimated_revenue，收益 API 映射为 revenue_api；DAU、DEU、ARPDAU、eCPM 和比率不可跨重复维度直接求和。"
     },
     {
       "id": "funnel_report",
@@ -39,8 +39,8 @@
         "第三方平台广告位ID", "状态", "价格", "eCPM API", "预估 eCPM",
         "请求/竞价", "填充率", "填充耗时（秒）", "收益API", "展示API"
       ],
-      "grain": "一行通常对应一个 TopOn 广告源；首行 Total 为当前聚合范围汇总。广告源行的请求是广告源请求，汇总行的请求是流量请求。",
-      "analysis_rule": "使用 normalize_mediation_management_report.py。先隔离 Total 汇总行；广告源请求不可跨瀑布层简单解释为流量请求，API 指标在复用第三方广告位ID或存在多分组时可能重复。"
+      "grain": "一行通常对应一个 TopOn 广告源；首行 Total 为当前聚合范围汇总。广告源行的请求是广告源请求，汇总行的请求是流量请求。单日导出可能没有日期列，日期由文件名作为快照上下文保留。",
+      "analysis_rule": "使用 normalize_mediation_management_report.py。先隔离 Total 汇总行；广告源请求不可跨瀑布层简单解释为流量请求，API 指标在复用第三方广告位ID或存在多分组时可能重复。价格列允许数值排序价格与竞价文本标签共存；未请求或未填充广告源的指标为空属于正常结构。"
     }
   ]
 }

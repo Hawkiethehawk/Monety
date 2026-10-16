@@ -72,7 +72,10 @@ FIELD_ALIASES: dict[str, tuple[str, ...]] = {
     "sort_price": ("价格", "排序价格", "sort price"),
     "ecpm_api": ("ecpm api", "ecpmapi"),
     "request_or_bid": ("请求/竞价", "请求竞价", "request or bid"),
-    "fill_latency_seconds": ("填充耗时（秒）", "填充耗时(秒)", "填充耗时", "fill latency seconds"),
+    "fill_latency_seconds": (
+        "填充耗时（秒）", "填充耗时(秒)", "填充耗时", "广告源填充耗时", "广告源填充耗时（秒）",
+        "广告源填充耗时(秒)", "fill latency seconds",
+    ),
     "click_share": ("点击占比", "click share"),
     "revenue_api_share": ("收益占比", "收益api占比", "revenue api share"),
     "impressions_api_share": ("展示api占比", "impressions api share"),
@@ -173,6 +176,17 @@ def is_summary_row(row: dict[str, Any]) -> bool:
 def normalize_header(value: Any) -> str:
     text = str(value or "").strip().lower()
     return re.sub(r"[\s_\-—–/\\:：()（）\[\]【】]+", "", text)
+
+
+# TopOn 聚合管理的“价格”列是混合语义：常规广告源为数值排序价格，
+# 竞价广告源可直接显示为文本标签。标签不是数值解析失败，也不参与价格均值。
+SORT_PRICE_BIDDING_LABELS = frozenset({
+    "竞价", "bid", "bidding", "headerbidding", "hb", "c2s", "clientbidding",
+})
+
+
+def is_sort_price_bidding_label(value: Any) -> bool:
+    return normalize_header(value) in SORT_PRICE_BIDDING_LABELS
 
 
 NORMALIZED_ALIASES = {
@@ -312,9 +326,9 @@ def parse_date(value: Any) -> date | None:
 
 
 def parse_date_range_from_filename(filename: str) -> dict[str, str] | None:
-    """Extract a YYYYMMDD-YYYYMMDD or YYYY-MM-DD_YYYY-MM-DD range."""
+    """Extract a date range or a single YYYYMMDD/ISO date from a filename."""
     matches = re.findall(r"(?<!\d)(20\d{2})[-_.]?(\d{2})[-_.]?(\d{2})(?!\d)", filename)
-    if len(matches) < 2:
+    if not matches:
         return None
     parsed: list[date] = []
     for year, month, day in matches[:2]:
@@ -322,6 +336,8 @@ def parse_date_range_from_filename(filename: str) -> dict[str, str] | None:
             parsed.append(date(int(year), int(month), int(day)))
         except ValueError:
             return None
+    if len(parsed) == 1:
+        return {"start": parsed[0].isoformat(), "end": parsed[0].isoformat()}
     if parsed[0] > parsed[1]:
         return None
     return {"start": parsed[0].isoformat(), "end": parsed[1].isoformat()}

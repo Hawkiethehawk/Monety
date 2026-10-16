@@ -20,7 +20,7 @@ TopOn 是本 Skill 的 IAA 数据分析模块。它负责读取用户提供的�
 |---|---|---|
 | 解释指标、报表列或产品功能 | 搜索本地帮助中心并引用官方 URL | `references/topn/metric-catalog.json`、`references/topn/data-contract.md` |
 | 检查报表能否分析 | 识别类型、标准化字段、运行质量审计 | `references/topn/report-types.json`、`references/topn/data-contract.md` |
-| 概括变化或定位异常 | 比较等长完整窗口，拆解收入、展示和 eCPM | `references/topn/metrics-and-diagnostics.md` |
+| 概括变化或定位异常 | 比较等长完整窗口；投放测试优先保留 2、4、7 日短窗口 | `references/topn/metrics-and-diagnostics.md` |
 | 判断结论可靠性 | 使用自适应窗口、历史噪声和实际分母 | `references/topn/adaptive-evidence-thresholds.md` |
 | 提出配置优化 | 先列证据，再设计单变量、可回滚实验 | `references/topn/recommendation-workflow.md` |
 | 处理 Open API | 显式调用独立的 `$topn-open-api` | 不用分析脚本替代 API 接入 |
@@ -35,7 +35,7 @@ TopOn 是本 Skill 的 IAA 数据分析模块。它负责读取用户提供的�
 - `[推断]`：与证据一致但尚未排除其他解释的原因假设。
 - `[建议]`：拟测试或执行的动作。
 
-只有 `[观测]` 和 `[计算]` 能描述指定数据的当前业务表现。帮助文档、行业经验和历史案例只用于解释指标或提出验证方向。主要结论同时标注 A/B/C/D 级：D 级证据或质量 `blocked` 时停止归因与配置建议；质量 `limited` 时关键结论不超过 C 级。不要设置统一 DAU 门槛，按实际分母、历史噪声、完整窗口和业务最小变化判断证据强度。
+只有 `[观测]` 和 `[计算]` 能描述指定数据的当前业务表现。帮助文档、行业经验和历史案例只用于解释指标或提出验证方向。主要结论同时标注 A/B/C/D 级：D 级证据或质量 `blocked` 时停止归因与配置建议；质量 `limited` 时关键结论不超过 C 级。2、4、7 日短窗口可用于投放测试观察，但单窗口结果最高 C 级；不要设置统一 DAU 门槛，按实际分母、历史噪声、完整窗口和业务最小变化判断证据强度。
 
 ## 一键处理报表
 
@@ -54,7 +54,7 @@ python scripts/topn/run_topn_analysis.py <报表或目录> --project <项目名>
 3. 隔离合计行、小计行和混合粒度。
 4. 生成 Data Analytics artifact。
 5. 检查完整性、唯一性、有效性、一致性、时间连续性和公式复算。
-6. 评估 7、14、28、56 日自适应证据窗口。
+6. 评估 2、4、7、14、28、56 日自适应证据窗口；不足以形成等长前后周期时，输出短窗口描述，不伪造基线。
 7. 输出 `analysis-manifest.json`，声明后续 Data Analytics 路由。
 
 单独检查结构：

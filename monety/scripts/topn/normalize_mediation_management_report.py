@@ -7,6 +7,7 @@ import argparse
 import csv
 import hashlib
 import json
+from datetime import date
 from pathlib import Path
 from typing import Any
 
@@ -19,6 +20,7 @@ from report_io import (
     load_metric_catalog,
     parse_date_range_from_filename,
     read_report,
+    is_sort_price_bidding_label,
     validate_mapping,
 )
 
@@ -172,15 +174,43 @@ def main() -> int:
             "code": "formula_rounding_or_source_mismatch",
             "mismatched_values": formula_reconciliation["mismatched_values"],
             "metrics": sorted({item["metric"] for item in formula_reconciliation["details"] if item["status"] == "mismatch"}),
+            "message": "聚合管理导出值可能按显示精度取整，或使用了广告源级隐藏分母；保留差异供复核，不作为结构阻断。",
         })
     report_period = parse_date_range_from_filename(args.report.name)
-    issues.extend([
-        {"severity": "warning", "code": "mixed_request_grain", "message": "汇总行请求是流量请求，明细行请求是广告源请求；已隔离汇总行。"},
-        {"severity": "warning", "code": "missing_report_date_column", "message": (
-            f"导出文件没有日期列；仅从文件名取得 {report_period['start']} 至 {report_period['end']}，无法做逐日趋势。"
-            if report_period else "导出文件没有日期列，文件名也未提供可解析的日期范围，无法做逐日趋势。"
-        )},
-    ])
+    issues.append({
+        "severity": "info", "code": "mixed_request_grain",
+        "message": "这是聚合管理报表的正常结构：Total 行为流量请求，广告源明细行为广告源请求；已隔离汇总行。",
+    })
+    issues.append({
+        "severity": "info" if report_period else "warning",
+        "code": "missing_report_date_column",
+        "message": (
+            f"导出文件没有日期列；已从文件名取得 {report_period['start']} 至 {report_period['end']}，按单日/区间快照保留，不能从单份快照构造逐日趋势。"
+            if report_period else "导出文件没有日期列，文件名也未提供可解析的日期范围，无法定位快照日期或做逐日趋势。"
+        ),
+    })
+    if "sort_price" in fields:
+        labels = sorted({
+            str(row.get("sort_price")).strip()
+            for row in normalized
+            if is_sort_price_bidding_label(row.get("sort_price"))
+        })
+        if labels:
+            issues.append({
+                "severity": "info",
+                "code": "mixed_sort_price_semantics",
+                "message": "“价格”列允许数值排序价格与竞价文本标签共存；竞价标签不参与数值价格比较。",
+                "labels": labels,
+            })
+
+    date_range = None
+    if report_period:
+        date_range = {
+            "start": report_period["start"],
+            "end": report_period["end"],
+            "distinct_days": (date.fromisoformat(report_period["end"]) - date.fromisoformat(report_period["start"])).days + 1,
+            "source": "filename",
+        }
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
     normalized_path = args.output_dir / "normalized_mediation_management.csv"
@@ -201,6 +231,7 @@ def main() -> int:
         "timezone": args.timezone or "UTC+0",
         "timezone_source": "argument" if args.timezone else "default_project_timezone",
         "report_period_from_filename": report_period,
+        "date_range": date_range,
         "input_row_count": len(raw_rows),
         "summary_rows_removed": len(summary_rows),
         "normalized_row_count": len(normalized),
