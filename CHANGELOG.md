@@ -1,5 +1,14 @@
 # Changelog
 
+## Monety 1.2.0 - 2026-10-30
+
+版本格式迁移：`monety/SKILL.md` 版本字段由两级 `1.2` 补零为三级 `1.2.0`，对齐 version-manager 2026-10-30 起的规则。Skill 指令内容无变化，标签使用 `monety-v1.2.0`。
+
+### Validation
+
+- `version_inspect.py --repo F:\Monety --project monety` 读出 `1.2.0`，版本检测通过。
+- 本次只改版本字段，未改动 Skill 行为，未执行额外测试。
+
 ## Monety 1.2 - 2026-10-16
 
 - 新增 Reddit、知乎和 V2EX 个人变现经验研究路由，允许社区实测影响优化方向、排查顺序和实验优先级。
